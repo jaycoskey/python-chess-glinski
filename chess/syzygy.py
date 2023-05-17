@@ -31,6 +31,9 @@ from types import TracebackType
 from typing import Deque, Dict, Iterable, Iterator, List, Optional, Tuple, Type, TypeVar, Union
 
 
+bg = chess.BG_Square
+
+
 UINT64_BE = struct.Struct(">Q")
 UINT32 = struct.Struct("<I")
 UINT32_BE = struct.Struct(">I")
@@ -51,10 +54,10 @@ TRIANGLE = [
 
 INVTRIANGLE = [1, 2, 3, 10, 11, 19, 0, 9, 18, 27]
 
-def offdiag(square: chess.Square) -> int:
-    return chess.square_rank(square) - chess.square_file(square)
+def offdiag(square: bg.Square) -> int:
+    return bg.square_rank(square) - bg.square_file(square)
 
-def flipdiag(square: chess.Square) -> chess.Square:
+def flipdiag(square: bg.Square) -> bg.Square:
     return ((square >> 3) | (square << 3)) & 63
 
 LOWER = [

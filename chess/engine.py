@@ -50,6 +50,8 @@ except ImportError:
     _WdlModel = str  # type: ignore
 
 
+bg = chess.BG_Square
+
 T = TypeVar("T")
 ProtocolT = TypeVar("ProtocolT", bound="Protocol")
 
@@ -1562,7 +1564,7 @@ class UciProtocol(Protocol):
         safe_history = all(board.move_stack)
         root = board.root() if safe_history else board
         fen = root.fen(shredder=board.chess960, en_passant="fen")
-        if uci_variant == "chess" and fen == chess.STARTING_FEN:
+        if uci_variant == "chess" and fen == bg.STARTING_FEN:
             builder.append("startpos")
         else:
             builder.append("fen")
@@ -2138,7 +2140,7 @@ class XBoardProtocol(Protocol):
 
         if new_game:
             fen = root.fen(shredder=board.chess960, en_passant="fen")
-            if variant != "normal" or fen != chess.STARTING_FEN or board.chess960:
+            if variant != "normal" or fen != bg.STARTING_FEN or board.chess960:
                 self.send_line(f"setboard {fen}")
 
         # Undo moves until common position.

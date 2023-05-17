@@ -26,7 +26,8 @@ import xml.etree.ElementTree as ET
 import chess
 
 from typing import Dict, Iterable, Optional, Tuple, Union
-from chess import Color, IntoSquareSet, Square
+from chess import Color, IntoSquareSet, BG_Square as bg
+from chess import BG_Square as bg
 
 
 SQUARE_SIZE = 45
@@ -89,16 +90,16 @@ DEFAULT_COLORS = {
 class Arrow:
     """Details of an arrow to be drawn."""
 
-    tail: Square
+    tail: bg.Square
     """Start square of the arrow."""
 
-    head: Square
+    head: bg.Square
     """End square of the arrow."""
 
     color: str
     """Arrow color."""
 
-    def __init__(self, tail: Square, head: Square, *, color: str = "green") -> None:
+    def __init__(self, tail: bg.Square, head: bg.Square, *, color: str = "green") -> None:
         self.tail = tail
         self.head = head
         self.color = color
@@ -120,15 +121,15 @@ class Arrow:
             color = "G"
 
         if self.tail == self.head:
-            return f"{color}{chess.SQUARE_NAMES[self.tail]}"
+            return f"{color}{bg.SQUARE_NAMES[self.tail]}"
         else:
-            return f"{color}{chess.SQUARE_NAMES[self.tail]}{chess.SQUARE_NAMES[self.head]}"
+            return f"{color}{bg.SQUARE_NAMES[self.tail]}{bg.SQUARE_NAMES[self.head]}"
 
     def __str__(self) -> str:
         return self.pgn()
 
     def __repr__(self) -> str:
-        return f"Arrow({chess.SQUARE_NAMES[self.tail].upper()}, {chess.SQUARE_NAMES[self.head].upper()}, color={self.color!r})"
+        return f"Arrow({bg.SQUARE_NAMES[self.tail].upper()}, {bg.SQUARE_NAMES[self.head].upper()}, color={self.color!r})"
 
     @classmethod
     def from_pgn(cls, pgn: str) -> Arrow:
@@ -155,8 +156,8 @@ class Arrow:
         else:
             color = "green"
 
-        tail = chess.parse_square(pgn[:2])
-        head = chess.parse_square(pgn[2:]) if len(pgn) > 2 else tail
+        tail = bg.parse_square(pgn[:2])
+        head = bg.parse_square(pgn[2:]) if len(pgn) > 2 else tail
         return cls(tail, head, color=color)
 
 
@@ -237,9 +238,9 @@ def piece(piece: chess.Piece, size: Optional[int] = None) -> str:
 def board(board: Optional[chess.BaseBoard] = None, *,
           orientation: Color = chess.WHITE,
           lastmove: Optional[chess.Move] = None,
-          check: Optional[Square] = None,
-          arrows: Iterable[Union[Arrow, Tuple[Square, Square]]] = [],
-          fill: Dict[Square, str] = {},
+          check: Optional[bg.Square] = None,
+          arrows: Iterable[Union[Arrow, Tuple[bg.Square, bg.Square]]] = [],
+          fill: Dict[bg.Square, str] = {},
           squares: Optional[IntoSquareSet] = None,
           size: Optional[int] = None,
           coordinates: bool = True,
@@ -367,30 +368,30 @@ def board(board: Optional[chess.BaseBoard] = None, *,
     # Render coordinates.
     if coordinates:
         coord_color, coord_opacity = _select_color(colors, "coord")
-        for file_index, file_name in enumerate(chess.FILE_NAMES):
+        for file_index, file_name in enumerate(bg.FILE_NAMES):
             x = (file_index if orientation else 7 - file_index) * SQUARE_SIZE + inner_border + margin + outer_border
             # Keep some padding here to separate the ascender from the border
             svg.append(_coord(file_name, x, 1, SQUARE_SIZE, margin, True, margin, color=coord_color, opacity=coord_opacity))
             svg.append(_coord(file_name, x, full_size - outer_border - margin, SQUARE_SIZE, margin, True, margin, color=coord_color, opacity=coord_opacity))
-        for rank_index, rank_name in enumerate(chess.RANK_NAMES):
+        for rank_index, rank_name in enumerate(bg.RANK_NAMES):
             y = (7 - rank_index if orientation else rank_index) * SQUARE_SIZE + inner_border + margin + outer_border
             svg.append(_coord(rank_name, 0, y, margin, SQUARE_SIZE, False, margin, color=coord_color, opacity=coord_opacity))
             svg.append(_coord(rank_name, full_size - outer_border - margin, y, margin, SQUARE_SIZE, False, margin, color=coord_color, opacity=coord_opacity))
 
     # Render board.
-    for square, bb in enumerate(chess.BB_SQUARES):
-        file_index = chess.square_file(square)
-        rank_index = chess.square_rank(square)
+    for square, bb in enumerate(bg.BB_SQUARES):
+        file_index = bg.square_file(square)
+        rank_index = bg.square_rank(square)
 
         x = (file_index if orientation else 7 - file_index) * SQUARE_SIZE + inner_border + margin + outer_border
         y = (7 - rank_index if orientation else rank_index) * SQUARE_SIZE + inner_border + margin + outer_border
 
-        cls = ["square", "light" if chess.BB_LIGHT_SQUARES & bb else "dark"]
+        cls = ["square", "light" if bg.BB_LIGHT_SQUARES & bb else "dark"]
         if lastmove and square in [lastmove.from_square, lastmove.to_square]:
             cls.append("lastmove")
         square_color, square_opacity = _select_color(colors, " ".join(cls))
 
-        cls.append(chess.SQUARE_NAMES[square])
+        cls.append(bg.SQUARE_NAMES[square])
 
         ET.SubElement(svg, "rect", _attrs({
             "x": x,
@@ -420,8 +421,8 @@ def board(board: Optional[chess.BaseBoard] = None, *,
 
     # Render check mark.
     if check is not None:
-        file_index = chess.square_file(check)
-        rank_index = chess.square_rank(check)
+        file_index = bg.square_file(check)
+        rank_index = bg.square_rank(check)
 
         x = (file_index if orientation else 7 - file_index) * SQUARE_SIZE + margin
         y = (7 - rank_index if orientation else rank_index) * SQUARE_SIZE + margin
@@ -436,9 +437,9 @@ def board(board: Optional[chess.BaseBoard] = None, *,
         }))
 
     # Render pieces and selected squares.
-    for square, bb in enumerate(chess.BB_SQUARES):
-        file_index = chess.square_file(square)
-        rank_index = chess.square_rank(square)
+    for square, bb in enumerate(bg.BB_SQUARES):
+        file_index = bg.square_file(square)
+        rank_index = bg.square_rank(square)
 
         x = (file_index if orientation else 7 - file_index) * SQUARE_SIZE + margin
         y = (7 - rank_index if orientation else rank_index) * SQUARE_SIZE + margin
@@ -475,10 +476,10 @@ def board(board: Optional[chess.BaseBoard] = None, *,
         except KeyError:
             opacity = 1.0
 
-        tail_file = chess.square_file(tail)
-        tail_rank = chess.square_rank(tail)
-        head_file = chess.square_file(head)
-        head_rank = chess.square_rank(head)
+        tail_file = bg.square_file(tail)
+        tail_rank = bg.square_rank(tail)
+        head_file = bg.square_file(head)
+        head_rank = bg.square_rank(head)
 
         xtail = outer_border + margin + inner_border + (tail_file + 0.5 if orientation else 7.5 - tail_file) * SQUARE_SIZE
         ytail = outer_border + margin + inner_border + (7.5 - tail_rank if orientation else tail_rank + 0.5) * SQUARE_SIZE

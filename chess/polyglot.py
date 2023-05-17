@@ -27,6 +27,9 @@ from types import TracebackType
 from typing import Callable, Container, Iterator, List, NamedTuple, Optional, Type, Union
 
 
+bg = chess.BG_Square
+
+
 PathLike = Union[str, bytes, os.PathLike]
 
 
@@ -269,13 +272,13 @@ class ZobristHasher:
             # But only if there's actually a pawn ready to capture it. Legality
             # of the potential capture is irrelevant.
             if board.turn == chess.WHITE:
-                ep_mask = chess.shift_down(chess.BB_SQUARES[board.ep_square])
+                ep_mask = chess.shift_down(bg.BB_SQUARES[board.ep_square])
             else:
-                ep_mask = chess.shift_up(chess.BB_SQUARES[board.ep_square])
+                ep_mask = chess.shift_up(bg.BB_SQUARES[board.ep_square])
             ep_mask = chess.shift_left(ep_mask) | chess.shift_right(ep_mask)
 
             if ep_mask & board.pawns & board.occupied_co[board.turn]:
-                return self.array[772 + chess.square_file(board.ep_square)]
+                return self.array[772 + bg.square_file(board.ep_square)]
         return 0
 
     def hash_turn(self, board: chess.Board) -> int:

@@ -81,19 +81,25 @@ WE_FLAG = 1
 NS_FLAG = 2
 NW_SE_FLAG = 4
 
+# bg ("board geometry") specifies which board geometry/shape will be used.
+# Currently, bg=chess.BG_Square is the only available option.
+# Later, at least one other will be supported: chess.BG_Hex6,
+#     for Glinski's hexagonal chess.
+bg = chess.BG_Square
+
 ITOSQ = [
-    chess.H7, chess.G7, chess.F7, chess.E7,
-    chess.H6, chess.G6, chess.F6, chess.E6,
-    chess.H5, chess.G5, chess.F5, chess.E5,
-    chess.H4, chess.G4, chess.F4, chess.E4,
-    chess.H3, chess.G3, chess.F3, chess.E3,
-    chess.H2, chess.G2, chess.F2, chess.E2,
-    chess.D7, chess.C7, chess.B7, chess.A7,
-    chess.D6, chess.C6, chess.B6, chess.A6,
-    chess.D5, chess.C5, chess.B5, chess.A5,
-    chess.D4, chess.C4, chess.B4, chess.A4,
-    chess.D3, chess.C3, chess.B3, chess.A3,
-    chess.D2, chess.C2, chess.B2, chess.A2,
+    bg.H7, bg.G7, bg.F7, bg.E7,
+    bg.H6, bg.G6, bg.F6, bg.E6,
+    bg.H5, bg.G5, bg.F5, bg.E5,
+    bg.H4, bg.G4, bg.F4, bg.E4,
+    bg.H3, bg.G3, bg.F3, bg.E3,
+    bg.H2, bg.G2, bg.F2, bg.E2,
+    bg.D7, bg.C7, bg.B7, bg.A7,
+    bg.D6, bg.C6, bg.B6, bg.A6,
+    bg.D5, bg.C5, bg.B5, bg.A5,
+    bg.D4, bg.C4, bg.B4, bg.A4,
+    bg.D3, bg.C3, bg.B3, bg.A3,
+    bg.D2, bg.C2, bg.B2, bg.A2,
 ]
 
 ENTRIES_PER_BLOCK = 16 * 1024
@@ -127,26 +133,26 @@ def idx_is_empty(x: int) -> int:
 def flip_type(x: chess.Square, y: chess.Square) -> int:
     ret = 0
 
-    if chess.square_file(x) > 3:
+    if bg.square_file(x) > 3:
         x = flip_we(x)
         y = flip_we(y)
         ret |= 1
 
-    if chess.square_rank(x) > 3:
+    if bg.square_rank(x) > 3:
         x = flip_ns(x)
         y = flip_ns(y)
         ret |= 2
 
-    rowx = chess.square_rank(x)
-    colx = chess.square_file(x)
+    rowx = bg.square_rank(x)
+    colx = bg.square_file(x)
 
     if rowx > colx:
         x = flip_nw_se(x)
         y = flip_nw_se(y)
         ret |= 4
 
-    rowy = chess.square_rank(y)
-    coly = chess.square_file(y)
+    rowy = bg.square_rank(y)
+    coly = bg.square_file(y)
     if rowx == colx and rowy > coly:
         x = flip_nw_se(x)
         y = flip_nw_se(y)
@@ -169,8 +175,8 @@ def init_pp48_idx() -> Tuple[List[List[int]], List[int], List[int]]:
     pp48_sq_y = [NOSQUARE] * MAX_PP48_INDEX
 
     idx = 0
-    for a in range(chess.H7, chess.A2 - 1, -1):
-        for b in range(a - 1, chess.A2 - 1, -1):
+    for a in range(bg.H7, bg.A2 - 1, -1):
+        for b in range(a - 1, bg.A2 - 1, -1):
             i = flip_we(flip_ns(a)) - 8
             j = flip_we(flip_ns(b)) - 8
 
@@ -341,11 +347,11 @@ def init_ppidx() -> Tuple[List[List[int]], List[int], List[int]]:
     pp_lo48 = [-1] * MAX_PPINDEX
 
     idx = 0
-    for a in range(chess.H7, chess.A2 - 1, -1):
+    for a in range(bg.H7, bg.A2 - 1, -1):
         if in_queenside(a):
             continue
 
-        for b in range(a - 1, chess.A2 - 1, -1):
+        for b in range(a - 1, bg.A2 - 1, -1):
             anchor = 0
             loosen = 0
 
@@ -371,23 +377,23 @@ PPIDX, PP_HI24, PP_LO48 = init_ppidx()
 
 
 def norm_kkindex(x: chess.Square, y: chess.Square) -> Tuple[int, int]:
-    if chess.square_file(x) > 3:
+    if bg.square_file(x) > 3:
         x = flip_we(x)
         y = flip_we(y)
 
-    if chess.square_rank(x) > 3:
+    if bg.square_rank(x) > 3:
         x = flip_ns(x)
         y = flip_ns(y)
 
-    rowx = chess.square_rank(x)
-    colx = chess.square_file(x)
+    rowx = bg.square_rank(x)
+    colx = bg.square_file(x)
 
     if rowx > colx:
         x = flip_nw_se(x)
         y = flip_nw_se(y)
 
-    rowy = chess.square_rank(y)
-    coly = chess.square_file(y)
+    rowy = bg.square_rank(y)
+    coly = bg.square_file(y)
 
     if rowx == colx and rowy > coly:
         x = flip_nw_se(x)
@@ -403,7 +409,7 @@ def init_kkidx() -> Tuple[List[List[int]], List[int], List[int]]:
     for x in range(64):
         for y in range(64):
             # Check if x to y is legal.
-            if x != y and not chess.BB_KING_ATTACKS[x] & chess.BB_SQUARES[y]:
+            if x != y and not bg.BB_KING_ATTACKS[x] & bg.BB_SQUARES[y]:
                 # Normalize.
                 i, j = norm_kkindex(x, y)
 
@@ -1122,7 +1128,7 @@ def kpk_pctoindex(c: Request) -> int:
     wk = c.white_piece_squares[0]
     bk = c.black_piece_squares[0]
 
-    if not (chess.A2 <= pawn < chess.A8):
+    if not (bg.A2 <= pawn < bg.A8):
         return NOINDEX
 
     if (pawn & 7) > 3:

@@ -42,13 +42,13 @@ class SuicideBoard(chess.Board):
     captures_compulsory = True
 
     def pin_mask(self, color: chess.Color, square: chess.Square) -> chess.Bitboard:
-        return chess.BB_ALL
+        return self.bg.BB_ALL
 
     def _attacked_for_king(self, path: chess.Bitboard, occupied: chess.Bitboard) -> bool:
         return False
 
     def checkers_mask(self) -> chess.Bitboard:
-        return chess.BB_EMPTY
+        return self.bg.BB_EMPTY
 
     def gives_check(self, move: chess.Move) -> bool:
         return False
@@ -92,20 +92,25 @@ class SuicideBoard(chess.Board):
         elif self.occupied == self.bishops:
             # In a position with only bishops, check if all our bishops can be
             # captured.
-            we_some_on_light = bool(self.occupied_co[color] & chess.BB_LIGHT_SQUARES)
-            we_some_on_dark = bool(self.occupied_co[color] & chess.BB_DARK_SQUARES)
-            they_all_on_dark = not (self.occupied_co[not color] & chess.BB_LIGHT_SQUARES)
-            they_all_on_light = not (self.occupied_co[not color] & chess.BB_DARK_SQUARES)
+            we_some_on_light = bool(self.occupied_co[color] & self.bg.BB_LIGHT_SQUARES)
+            we_some_on_dark = bool(self.occupied_co[color] & self.bg.BB_DARK_SQUARES)
+            they_all_on_dark = not (self.occupied_co[not color] & self.bg.BB_LIGHT_SQUARES)
+            they_all_on_light = not (self.occupied_co[not color] & self.bg.BB_DARK_SQUARES)
             return (we_some_on_light and they_all_on_dark) or (we_some_on_dark and they_all_on_light)
         elif self.occupied == self.knights and chess.popcount(self.knights) == 2:
             return (
                 self.turn == color ^
-                bool(self.occupied_co[chess.WHITE] & chess.BB_LIGHT_SQUARES) ^
-                bool(self.occupied_co[chess.BLACK] & chess.BB_DARK_SQUARES))
+                bool(self.occupied_co[chess.WHITE] & self.bg.BB_LIGHT_SQUARES) ^
+                bool(self.occupied_co[chess.BLACK] & self.bg.BB_DARK_SQUARES))
         else:
             return False
 
-    def generate_pseudo_legal_moves(self, from_mask: chess.Bitboard = chess.BB_ALL, to_mask: chess.Bitboard = chess.BB_ALL) -> Iterator[chess.Move]:
+    def generate_pseudo_legal_moves(self, from_mask: chess.Bitboard = None, to_mask: chess.Bitboard = None) -> Iterator[chess.Move]:
+        if from_mask is None:
+            from_mask = self.bg.BB_ALL
+        if to_mask is None:
+            to_mask = self.bg.BB_ALL
+
         for move in super().generate_pseudo_legal_moves(from_mask, to_mask):
             # Add king promotions.
             if move.promotion == chess.QUEEN:
@@ -113,14 +118,19 @@ class SuicideBoard(chess.Board):
 
             yield move
 
-    def generate_legal_moves(self, from_mask: chess.Bitboard = chess.BB_ALL, to_mask: chess.Bitboard = chess.BB_ALL) -> Iterator[chess.Move]:
+    def generate_legal_moves(self, from_mask: chess.Bitboard = None, to_mask: chess.Bitboard = None) -> Iterator[chess.Move]:
+        if from_mask is None:
+            from_mask = self.bg.BB_ALL
+        if to_mask is None:
+            to_mask = self.bg.BB_ALL
+
         if self.is_variant_end():
             return
 
         # Generate captures first.
         found_capture = False
         for move in self.generate_pseudo_legal_captures():
-            if chess.BB_SQUARES[move.from_square] & from_mask and chess.BB_SQUARES[move.to_square] & to_mask:
+            if self.bg.BB_SQUARES[move.from_square] & from_mask and self.bg.BB_SQUARES[move.to_square] & to_mask:
                 yield move
             found_capture = True
 
@@ -196,7 +206,7 @@ class AntichessBoard(GiveawayBoard):
 
     def reset(self) -> None:
         super().reset()
-        self.castling_rights = chess.BB_EMPTY
+        self.castling_rights = self.bg.BB_EMPTY
 
 
 class AtomicBoard(chess.Board):
@@ -235,10 +245,10 @@ class AtomicBoard(chess.Board):
         if self.occupied_co[not color] & ~self.kings:
             # Unless there are only bishops that cannot explode each other.
             if self.occupied == self.bishops | self.kings:
-                if not (self.bishops & self.occupied_co[chess.WHITE] & chess.BB_DARK_SQUARES):
-                    return not (self.bishops & self.occupied_co[chess.BLACK] & chess.BB_LIGHT_SQUARES)
-                if not (self.bishops & self.occupied_co[chess.WHITE] & chess.BB_LIGHT_SQUARES):
-                    return not (self.bishops & self.occupied_co[chess.BLACK] & chess.BB_DARK_SQUARES)
+                if not (self.bishops & self.occupied_co[chess.WHITE] & self.bg.BB_DARK_SQUARES):
+                    return not (self.bishops & self.occupied_co[chess.BLACK] & self.bg.BB_LIGHT_SQUARES)
+                if not (self.bishops & self.occupied_co[chess.WHITE] & self.bg.BB_LIGHT_SQUARES):
+                    return not (self.bishops & self.occupied_co[chess.BLACK] & self.bg.BB_DARK_SQUARES)
             return False
 
         # Queen or pawn (future queen) can give mate against bare king.
@@ -260,24 +270,24 @@ class AtomicBoard(chess.Board):
         # enemy king.
         enemy_kings = self.kings & self.occupied_co[not self.turn]
         for enemy_king in chess.scan_forward(enemy_kings):
-            path &= ~chess.BB_KING_ATTACKS[enemy_king]
+            path &= ~self.bg.BB_KING_ATTACKS[enemy_king]
 
         return super()._attacked_for_king(path, occupied)
 
     def _kings_connected(self) -> bool:
         white_kings = self.kings & self.occupied_co[chess.WHITE]
         black_kings = self.kings & self.occupied_co[chess.BLACK]
-        return any(chess.BB_KING_ATTACKS[sq] & black_kings for sq in chess.scan_forward(white_kings))
+        return any(self.bg.BB_KING_ATTACKS[sq] & black_kings for sq in chess.scan_forward(white_kings))
 
     def _push_capture(self, move: chess.Move, capture_square: chess.Square, piece_type: chess.PieceType, was_promoted: bool) -> None:
-        explosion_radius = chess.BB_KING_ATTACKS[move.to_square] & ~self.pawns
+        explosion_radius = self.bg.BB_KING_ATTACKS[move.to_square] & ~self.pawns
 
         # Destroy castling rights.
         self.castling_rights &= ~explosion_radius
         if explosion_radius & self.kings & self.occupied_co[chess.WHITE] & ~self.promoted:
-            self.castling_rights &= ~chess.BB_RANK_1
+            self.castling_rights &= ~self.bg.BB_RANK_1
         if explosion_radius & self.kings & self.occupied_co[chess.BLACK] & ~self.promoted:
-            self.castling_rights &= ~chess.BB_RANK_8
+            self.castling_rights &= ~self.bg.BB_RANK_8
 
         # Explode the capturing piece.
         self._remove_piece_at(move.to_square)
@@ -287,7 +297,7 @@ class AtomicBoard(chess.Board):
             self._remove_piece_at(explosion)
 
     def checkers_mask(self) -> chess.Bitboard:
-        return chess.BB_EMPTY if self._kings_connected() else super().checkers_mask()
+        return self.bg.BB_EMPTY if self._kings_connected() else super().checkers_mask()
 
     def was_into_check(self) -> bool:
         return not self._kings_connected() and super().was_into_check()
@@ -314,7 +324,12 @@ class AtomicBoard(chess.Board):
     def is_stalemate(self) -> bool:
         return not self.is_variant_loss() and super().is_stalemate()
 
-    def generate_legal_moves(self, from_mask: chess.Bitboard = chess.BB_ALL, to_mask: chess.Bitboard = chess.BB_ALL) -> Iterator[chess.Move]:
+    def generate_legal_moves(self, from_mask: chess.Bitboard = None, to_mask: chess.Bitboard = None) -> Iterator[chess.Move]:
+        if from_mask is None:
+            from_mask = self.bg.BB_ALL
+        if to_mask is None:
+            to_mask = self.bg.BB_ALL
+
         for move in self.generate_pseudo_legal_moves(from_mask, to_mask):
             if self.is_legal(move):
                 yield move
@@ -358,7 +373,6 @@ class KingOfTheHillBoard(chess.Board):
 
 
 class RacingKingsBoard(chess.Board):
-
     aliases = ["Racing Kings", "Racing", "Race", "racingkings"]
     uci_variant = "racingkings"
     xboard_variant = "racingkings"  # Unofficial
@@ -378,35 +392,40 @@ class RacingKingsBoard(chess.Board):
     def is_legal(self, move: chess.Move) -> bool:
         return super().is_legal(move) and not self.gives_check(move)
 
-    def generate_legal_moves(self, from_mask: chess.Bitboard = chess.BB_ALL, to_mask: chess.Bitboard = chess.BB_ALL) -> Iterator[chess.Move]:
+    def generate_legal_moves(self, from_mask: chess.Bitboard = None, to_mask: chess.Bitboard = None) -> Iterator[chess.Move]:
+        if from_mask is None:
+            from_mask = self.bg.BB_ALL
+        if to_mask is None:
+            to_mask = self.bg.BB_ALL
+
         for move in super().generate_legal_moves(from_mask, to_mask):
             if not self.gives_check(move):
                 yield move
 
     def is_variant_end(self) -> bool:
-        if not self.kings & chess.BB_RANK_8:
+        if not self.kings & self.bg.BB_RANK_8:
             return False
 
         black_kings = self.kings & self.occupied_co[chess.BLACK]
-        if self.turn == chess.WHITE or black_kings & chess.BB_RANK_8 or not black_kings:
+        if self.turn == chess.WHITE or black_kings & self.bg.BB_RANK_8 or not black_kings:
             return True
 
         # White has reached the backrank. The game is over if black can not
         # also reach the backrank on the next move. Check if there are any
         # safe squares for the king.
         black_king = chess.msb(black_kings)
-        targets = chess.BB_KING_ATTACKS[black_king] & chess.BB_RANK_8 & ~self.occupied_co[chess.BLACK]
+        targets = self.bg.BB_KING_ATTACKS[black_king] & self.bg.BB_RANK_8 & ~self.occupied_co[chess.BLACK]
         return all(self.attackers_mask(chess.WHITE, target) for target in chess.scan_forward(targets))
 
     def is_variant_draw(self) -> bool:
-        in_goal = self.kings & chess.BB_RANK_8
+        in_goal = self.kings & self.bg.BB_RANK_8
         return all(in_goal & side for side in self.occupied_co)
 
     def is_variant_loss(self) -> bool:
-        return self.is_variant_end() and not self.kings & self.occupied_co[self.turn] & chess.BB_RANK_8
+        return self.is_variant_end() and not self.kings & self.occupied_co[self.turn] & self.bg.BB_RANK_8
 
     def is_variant_win(self) -> bool:
-        in_goal = self.kings & chess.BB_RANK_8
+        in_goal = self.kings & self.bg.BB_RANK_8
         return (
             self.is_variant_end() and
             bool(in_goal & self.occupied_co[self.turn]) and
@@ -419,7 +438,7 @@ class RacingKingsBoard(chess.Board):
         status = super().status()
         if self.is_check():
             status |= chess.STATUS_RACE_CHECK | chess.STATUS_TOO_MANY_CHECKERS | chess.STATUS_IMPOSSIBLE_CHECK
-        if self.turn == chess.BLACK and all(self.occupied_co[co] & self.kings & chess.BB_RANK_8 for co in chess.COLORS):
+        if self.turn == chess.BLACK and all(self.occupied_co[co] & self.kings & self.bg.BB_RANK_8 for co in chess.COLORS):
             status |= chess.STATUS_RACE_OVER
         if self.pawns:
             status |= chess.STATUS_RACE_MATERIAL
@@ -482,8 +501,8 @@ class HordeBoard(chess.Board):
 
         # Two same color bishops suffice to cover all the light and dark
         # squares around the enemy king.
-        horde_darkb = chess.popcount(chess.BB_DARK_SQUARES & white & self.bishops)
-        horde_lightb = chess.popcount(chess.BB_LIGHT_SQUARES & white & self.bishops)
+        horde_darkb = chess.popcount(self.bg.BB_DARK_SQUARES & white & self.bishops)
+        horde_lightb = chess.popcount(self.bg.BB_LIGHT_SQUARES & white & self.bishops)
         horde_bishop_co = chess.WHITE if horde_lightb >= 1 else chess.BLACK
         horde_num = (
             pawns + knights + rooks + queens +
@@ -497,8 +516,8 @@ class HordeBoard(chess.Board):
         pieces_knights = chess.popcount(pieces & self.knights)
         pieces_rooks = chess.popcount(pieces & self.rooks)
         pieces_queens = chess.popcount(pieces & self.queens)
-        pieces_darkb = chess.popcount(chess.BB_DARK_SQUARES & pieces & self.bishops)
-        pieces_lightb = chess.popcount(chess.BB_LIGHT_SQUARES & pieces & self.bishops)
+        pieces_darkb = chess.popcount(self.bg.BB_DARK_SQUARES & pieces & self.bishops)
+        pieces_lightb = chess.popcount(self.bg.BB_LIGHT_SQUARES & pieces & self.bishops)
         pieces_num = chess.popcount(pieces)
 
         def pieces_oppositeb_of(square_color: chess.Color) -> int:
@@ -679,7 +698,7 @@ class HordeBoard(chess.Board):
             status &= ~chess.STATUS_TOO_MANY_WHITE_PIECES
             status &= ~chess.STATUS_TOO_MANY_WHITE_PAWNS
 
-        if not self.pawns & chess.BB_RANK_8 and not self.occupied_co[chess.BLACK] & self.pawns & chess.BB_RANK_1:
+        if not self.pawns & self.bg.BB_RANK_8 and not self.occupied_co[chess.BLACK] & self.pawns & self.bg.BB_RANK_1:
             status &= ~chess.STATUS_PAWNS_ON_BACKRANK
 
         if self.occupied_co[chess.WHITE] & self.kings:
@@ -907,7 +926,7 @@ class CrazyhouseBoard(chess.Board):
         if move.drop:
             self.pockets[not self.turn].remove(move.drop)
 
-    def _push_capture(self, move: chess.Move, capture_square: chess.Square, piece_type: chess.PieceType, was_promoted: bool) -> None:
+    def _push_capture(self, move: chess.Move, capture_square: chess.BG_Square.Square, piece_type: chess.PieceType, was_promoted: bool) -> None:
         if was_promoted:
             self.pockets[self.turn].add(chess.PAWN)
         else:
@@ -937,7 +956,7 @@ class CrazyhouseBoard(chess.Board):
         elif chess.popcount(king_attackers) == 1:
             return chess.between(king, chess.msb(king_attackers)) & ~self.occupied
         else:
-            return chess.BB_EMPTY
+            return self.bg.BB_EMPTY
 
     def legal_drop_squares(self) -> chess.SquareSet:
         """
@@ -955,28 +974,37 @@ class CrazyhouseBoard(chess.Board):
         if move.drop and move.from_square == move.to_square:
             return (
                 move.drop != chess.KING and
-                not chess.BB_SQUARES[move.to_square] & self.occupied and
-                not (move.drop == chess.PAWN and chess.BB_SQUARES[move.to_square] & chess.BB_BACKRANKS) and
+                not self.bg.BB_SQUARES[move.to_square] & self.occupied and
+                not (move.drop == chess.PAWN and self.bg.BB_SQUARES[move.to_square] & self.bg.BB_BACKRANKS) and
                 self.pockets[self.turn].count(move.drop) > 0)
         else:
             return super().is_pseudo_legal(move)
 
     def is_legal(self, move: chess.Move) -> bool:
         if move.drop:
-            return self.is_pseudo_legal(move) and bool(self.legal_drop_squares_mask() & chess.BB_SQUARES[move.to_square])
+            return self.is_pseudo_legal(move) and bool(self.legal_drop_squares_mask() & self.bg.BB_SQUARES[move.to_square])
         else:
             return super().is_legal(move)
 
-    def generate_pseudo_legal_drops(self, to_mask: chess.Bitboard = chess.BB_ALL) -> Iterator[chess.Move]:
+    def generate_pseudo_legal_drops(self, to_mask: chess.Bitboard = None) -> Iterator[chess.Move]:
+        if to_mask is None:
+            to_mask = self.bg.BB_ALL
+
         for pt in chess.PIECE_TYPES:
             if self.pockets[self.turn].count(pt):
-                for to_square in chess.scan_forward(to_mask & ~self.occupied & (~chess.BB_BACKRANKS if pt == chess.PAWN else chess.BB_ALL)):
+                for to_square in chess.scan_forward(to_mask & ~self.occupied & (~self.bg.BB_BACKRANKS if pt == chess.PAWN else self.bg.BB_ALL)):
                     yield chess.Move(to_square, to_square, drop=pt)
 
-    def generate_legal_drops(self, to_mask: chess.Bitboard = chess.BB_ALL) -> Iterator[chess.Move]:
+    def generate_legal_drops(self, to_mask: chess.Bitboard = None) -> Iterator[chess.Move]:
+        if to_mask is None:
+            to_mask = self.bg.BB_ALL
         return self.generate_pseudo_legal_drops(to_mask=self.legal_drop_squares_mask() & to_mask)
 
-    def generate_legal_moves(self, from_mask: chess.Bitboard = chess.BB_ALL, to_mask: chess.Bitboard = chess.BB_ALL) -> Iterator[chess.Move]:
+    def generate_legal_moves(self, from_mask: chess.Bitboard = None, to_mask: chess.Bitboard = None) -> Iterator[chess.Move]:
+        if from_mask is None:
+            from_mask = self.bg.BB_ALL
+        if to_mask is None:
+            to_mask = self.bg.BB_ALL
         return itertools.chain(
             super().generate_legal_moves(from_mask, to_mask),
             self.generate_legal_drops(from_mask & to_mask))

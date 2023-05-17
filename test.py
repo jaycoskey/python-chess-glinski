@@ -29,6 +29,7 @@ import unittest
 import io
 
 import chess
+_dummy = chess.BG_Square.A1
 import chess.gaviota
 import chess.engine
 import chess.pgn
@@ -58,12 +59,16 @@ def catchAndSkip(signature, message=None):
 class SquareTestCase(unittest.TestCase):
 
     def test_square(self):
-        for square in chess.SQUARES:
-            file_index = chess.square_file(square)
-            rank_index = chess.square_rank(square)
-            self.assertEqual(chess.square(file_index, rank_index), square, chess.square_name(square))
+        bg = chess.BG_Square
+
+        for square in bg.SQUARES:
+            file_index = bg.square_file(square)
+            rank_index = bg.square_rank(square)
+            self.assertEqual(bg.square(file_index, rank_index), square, bg.square_name(square))
 
     def test_shifts(self):
+        bg = chess.BG_Square
+
         shifts = [
             chess.shift_down,
             chess.shift_2_down,
@@ -80,53 +85,63 @@ class SquareTestCase(unittest.TestCase):
         ]
 
         for shift in shifts:
-            for bb_square in chess.BB_SQUARES:
+            for bb_square in bg.BB_SQUARES:
                 shifted = shift(bb_square)
                 c = chess.popcount(shifted)
                 self.assertLessEqual(c, 1)
-                self.assertEqual(c, chess.popcount(shifted & chess.BB_ALL))
+                self.assertEqual(c, chess.popcount(shifted & bg.BB_ALL))
 
     def test_parse_square(self):
-        self.assertEqual(chess.parse_square("a1"), 0)
+        bg = chess.BG_Square
+
+        self.assertEqual(bg.parse_square("a1"), 0)
         with self.assertRaises(ValueError):
-            self.assertEqual(chess.parse_square("A1"))
+            self.assertEqual(bg.parse_square("A1"))
         with self.assertRaises(ValueError):
-            self.assertEqual(chess.parse_square("a0"))
+            self.assertEqual(bg.parse_square("a0"))
 
     def test_square_distance(self):
-        self.assertEqual(chess.square_distance(chess.A1, chess.A1), 0)
-        self.assertEqual(chess.square_distance(chess.A1, chess.H8), 7)
-        self.assertEqual(chess.square_distance(chess.E1, chess.E8), 7)
-        self.assertEqual(chess.square_distance(chess.A4, chess.H4), 7)
-        self.assertEqual(chess.square_distance(chess.D4, chess.E5), 1)
+        bg = chess.BG_Square
+
+        self.assertEqual(bg.square_distance(bg.A1, bg.A1), 0)
+        self.assertEqual(bg.square_distance(bg.A1, bg.H8), 7)
+        self.assertEqual(bg.square_distance(bg.E1, bg.E8), 7)
+        self.assertEqual(bg.square_distance(bg.A4, bg.H4), 7)
+        self.assertEqual(bg.square_distance(bg.D4, bg.E5), 1)
 
     def test_square_manhattan_distance(self):
-        self.assertEqual(chess.square_manhattan_distance(chess.A1, chess.A1), 0)
-        self.assertEqual(chess.square_manhattan_distance(chess.A1, chess.H8), 14)
-        self.assertEqual(chess.square_manhattan_distance(chess.E1, chess.E8), 7)
-        self.assertEqual(chess.square_manhattan_distance(chess.A4, chess.H4), 7)
-        self.assertEqual(chess.square_manhattan_distance(chess.D4, chess.E5), 2)
+        bg = chess.BG_Square
+
+        self.assertEqual(bg.square_manhattan_distance(bg.A1, bg.A1), 0)
+        self.assertEqual(bg.square_manhattan_distance(bg.A1, bg.H8), 14)
+        self.assertEqual(bg.square_manhattan_distance(bg.E1, bg.E8), 7)
+        self.assertEqual(bg.square_manhattan_distance(bg.A4, bg.H4), 7)
+        self.assertEqual(bg.square_manhattan_distance(bg.D4, bg.E5), 2)
 
     def test_square_knight_distance(self):
-        self.assertEqual(chess.square_knight_distance(chess.A1, chess.A1), 0)
-        self.assertEqual(chess.square_knight_distance(chess.A1, chess.H8), 6)
-        self.assertEqual(chess.square_knight_distance(chess.G1, chess.F3), 1)
-        self.assertEqual(chess.square_knight_distance(chess.E1, chess.E8), 5)
-        self.assertEqual(chess.square_knight_distance(chess.A4, chess.H4), 5)
-        self.assertEqual(chess.square_knight_distance(chess.A1, chess.B1), 3)
-        self.assertEqual(chess.square_knight_distance(chess.A1, chess.C3), 4)
-        self.assertEqual(chess.square_knight_distance(chess.A1, chess.B2), 4)
-        self.assertEqual(chess.square_knight_distance(chess.C1, chess.B2), 2)
+        bg = chess.BG_Square
+
+        self.assertEqual(bg.square_knight_distance(bg.A1, bg.A1), 0)
+        self.assertEqual(bg.square_knight_distance(bg.A1, bg.H8), 6)
+        self.assertEqual(bg.square_knight_distance(bg.G1, bg.F3), 1)
+        self.assertEqual(bg.square_knight_distance(bg.E1, bg.E8), 5)
+        self.assertEqual(bg.square_knight_distance(bg.A4, bg.H4), 5)
+        self.assertEqual(bg.square_knight_distance(bg.A1, bg.B1), 3)
+        self.assertEqual(bg.square_knight_distance(bg.A1, bg.C3), 4)
+        self.assertEqual(bg.square_knight_distance(bg.A1, bg.B2), 4)
+        self.assertEqual(bg.square_knight_distance(bg.C1, bg.B2), 2)
 
 
 class MoveTestCase(unittest.TestCase):
 
     def test_equality(self):
-        a = chess.Move(chess.A1, chess.A2)
-        b = chess.Move(chess.A1, chess.A2)
-        c = chess.Move(chess.H7, chess.H8, chess.BISHOP)
-        d1 = chess.Move(chess.H7, chess.H8)
-        d2 = chess.Move(chess.H7, chess.H8)
+        bg = chess.BG_Square
+
+        a = chess.Move(bg.A1, bg.A2)
+        b = chess.Move(bg.A1, bg.A2)
+        c = chess.Move(bg.H7, bg.H8, chess.BISHOP)
+        d1 = chess.Move(bg.H7, bg.H8)
+        d2 = chess.Move(bg.H7, bg.H8)
 
         self.assertEqual(a, b)
         self.assertEqual(b, a)
@@ -226,9 +241,11 @@ class PieceTestCase(unittest.TestCase):
 class BoardTestCase(unittest.TestCase):
 
     def test_default_position(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
-        self.assertEqual(board.piece_at(chess.B1), chess.Piece.from_symbol("N"))
-        self.assertEqual(board.fen(), chess.STARTING_FEN)
+        self.assertEqual(board.piece_at(bg.B1), chess.Piece.from_symbol("N"))
+        self.assertEqual(board.fen(), bg.STARTING_FEN)
         self.assertEqual(board.turn, chess.WHITE)
 
     def test_empty(self):
@@ -255,14 +272,18 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.fen(), base_epd + " 0 1")
 
     def test_move_making(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
-        move = chess.Move(chess.E2, chess.E4)
+        move = chess.Move(bg.E2, bg.E4)
         board.push(move)
         self.assertEqual(board.peek(), move)
 
     def test_fen(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
-        self.assertEqual(board.fen(), chess.STARTING_FEN)
+        self.assertEqual(board.fen(), bg.STARTING_FEN)
 
         fen = "6k1/pb3pp1/1p2p2p/1Bn1P3/8/5N2/PP1q1PPP/6K1 w - - 0 24"
         board.set_fen(fen)
@@ -272,11 +293,13 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.fen(), "6k1/pb3pp1/1p2p2p/1Bn1P3/8/8/PP1N1PPP/6K1 b - - 0 24")
 
     def test_xfen(self):
+        bg = chess.BG_Square
+
         # https://de.wikipedia.org/wiki/Forsyth-Edwards-Notation#Beispiel
         xfen = "rn2k1r1/ppp1pp1p/3p2p1/5bn1/P7/2N2B2/1PPPPP2/2BNK1RR w Gkq - 4 11"
         board = chess.Board(xfen, chess960=True)
-        self.assertEqual(board.castling_rights, chess.BB_G1 | chess.BB_A8 | chess.BB_G8)
-        self.assertEqual(board.clean_castling_rights(), chess.BB_G1 | chess.BB_A8 | chess.BB_G8)
+        self.assertEqual(board.castling_rights, bg.BB_G1 | bg.BB_A8 | bg.BB_G8)
+        self.assertEqual(board.clean_castling_rights(), bg.BB_G1 | bg.BB_A8 | bg.BB_G8)
         self.assertEqual(board.shredder_fen(), "rn2k1r1/ppp1pp1p/3p2p1/5bn1/P7/2N2B2/1PPPPP2/2BNK1RR w Gga - 4 11")
         self.assertEqual(board.fen(), xfen)
         self.assertTrue(board.has_castling_rights(chess.WHITE))
@@ -289,7 +312,7 @@ class BoardTestCase(unittest.TestCase):
         # Chess960 position #284.
         board = chess.Board("rkbqrbnn/pppppppp/8/8/8/8/PPPPPPPP/RKBQRBNN w - - 0 1", chess960=True)
         board.castling_rights = board.rooks
-        self.assertTrue(board.clean_castling_rights() & chess.BB_A1)
+        self.assertTrue(board.clean_castling_rights() & bg.BB_A1)
         self.assertEqual(board.fen(), "rkbqrbnn/pppppppp/8/8/8/8/PPPPPPPP/RKBQRBNN w KQkq - 0 1")
         self.assertEqual(board.shredder_fen(), "rkbqrbnn/pppppppp/8/8/8/8/PPPPPPPP/RKBQRBNN w EAea - 0 1")
 
@@ -310,30 +333,34 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.fen(en_passant="xfen"), "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1")
 
     def test_get_set(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
-        self.assertEqual(board.piece_at(chess.B1), chess.Piece.from_symbol("N"))
+        self.assertEqual(board.piece_at(bg.B1), chess.Piece.from_symbol("N"))
 
-        board.remove_piece_at(chess.E2)
-        self.assertEqual(board.piece_at(chess.E2), None)
+        board.remove_piece_at(bg.E2)
+        self.assertEqual(board.piece_at(bg.E2), None)
 
-        board.set_piece_at(chess.E4, chess.Piece.from_symbol("r"))
-        self.assertEqual(board.piece_type_at(chess.E4), chess.ROOK)
+        board.set_piece_at(bg.E4, chess.Piece.from_symbol("r"))
+        self.assertEqual(board.piece_type_at(bg.E4), chess.ROOK)
 
-        board.set_piece_at(chess.F1, None)
-        self.assertEqual(board.piece_at(chess.F1), None)
+        board.set_piece_at(bg.F1, None)
+        self.assertEqual(board.piece_at(bg.F1), None)
 
-        board.set_piece_at(chess.H7, chess.Piece.from_symbol("Q"), promoted=True)
-        self.assertEqual(board.promoted, chess.BB_H7)
+        board.set_piece_at(bg.H7, chess.Piece.from_symbol("Q"), promoted=True)
+        self.assertEqual(board.promoted, bg.BB_H7)
 
-        board.set_piece_at(chess.H7, None)
-        self.assertEqual(board.promoted, chess.BB_EMPTY)
-        self.assertEqual(board.piece_at(chess.H7), None)
+        board.set_piece_at(bg.H7, None)
+        self.assertEqual(board.promoted, bg.BB_EMPTY)
+        self.assertEqual(board.piece_at(bg.H7), None)
 
     def test_color_at(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
-        self.assertEqual(board.color_at(chess.A1), chess.WHITE)
-        self.assertEqual(board.color_at(chess.G7), chess.BLACK)
-        self.assertEqual(board.color_at(chess.E4), None)
+        self.assertEqual(board.color_at(bg.A1), chess.WHITE)
+        self.assertEqual(board.color_at(bg.G7), chess.BLACK)
+        self.assertEqual(board.color_at(bg.E4), None)
 
     def test_pawn_captures(self):
         board = chess.Board()
@@ -355,13 +382,15 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(len(list(board.generate_pseudo_legal_moves())), 16)
 
     def test_single_step_pawn_move(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
         a3 = chess.Move.from_uci("a2a3")
         self.assertIn(a3, board.pseudo_legal_moves)
         self.assertIn(a3, board.legal_moves)
         board.push(a3)
         board.pop()
-        self.assertEqual(board.fen(), chess.STARTING_FEN)
+        self.assertEqual(board.fen(), bg.STARTING_FEN)
 
     def test_castling(self):
         board = chess.Board("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 1 1")
@@ -414,6 +443,8 @@ class BoardTestCase(unittest.TestCase):
             board.parse_san("Kh1")
 
     def test_ninesixty_castling(self):
+        bg = chess.BG_Square
+
         fen = "3r1k1r/4pp2/8/8/8/8/8/4RKR1 w Gd - 1 1"
         board = chess.Board(fen, chess960=True)
 
@@ -421,8 +452,8 @@ class BoardTestCase(unittest.TestCase):
         move = board.parse_san("O-O")
         self.assertEqual(board.san(move), "O-O")
         self.assertEqual(board.xboard(move), "O-O")
-        self.assertEqual(move.from_square, chess.F1)
-        self.assertEqual(move.to_square, chess.G1)
+        self.assertEqual(move.from_square, bg.F1)
+        self.assertEqual(move.to_square, bg.G1)
         self.assertIn(move, board.legal_moves)
         board.push(move)
         self.assertEqual(board.shredder_fen(), "3r1k1r/4pp2/8/8/8/8/8/4RRK1 b d - 2 1")
@@ -434,8 +465,8 @@ class BoardTestCase(unittest.TestCase):
         move = board.parse_san("O-O-O")
         self.assertEqual(board.san(move), "O-O-O")
         self.assertEqual(board.xboard(move), "O-O-O")
-        self.assertEqual(move.from_square, chess.F8)
-        self.assertEqual(move.to_square, chess.D8)
+        self.assertEqual(move.from_square, bg.F8)
+        self.assertEqual(move.to_square, bg.D8)
         self.assertIn(move, board.legal_moves)
         board.push(move)
         self.assertEqual(board.shredder_fen(), "2kr3r/4pp2/8/8/8/8/8/4RRK1 w - - 3 2")
@@ -451,8 +482,8 @@ class BoardTestCase(unittest.TestCase):
         # White can just hop the rook over.
         move = board.parse_san("O-O")
         self.assertEqual(board.san(move), "O-O")
-        self.assertEqual(move.from_square, chess.G1)
-        self.assertEqual(move.to_square, chess.H1)
+        self.assertEqual(move.from_square, bg.G1)
+        self.assertEqual(move.to_square, bg.H1)
         self.assertIn(move, board.legal_moves)
         board.push(move)
         self.assertEqual(board.shredder_fen(), "Qr4k1/4pppp/8/8/8/8/8/R4RK1 b b - 1 1")
@@ -473,13 +504,14 @@ class BoardTestCase(unittest.TestCase):
         self.assertIn(chess.Move.from_uci("g1h1"), board.legal_moves)  # Kh1
 
     def test_selective_castling(self):
+        bg = chess.BG_Square
         board = chess.Board("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1")
 
         # King not selected.
-        self.assertFalse(any(board.generate_castling_moves(chess.BB_ALL & ~board.kings)))
+        self.assertFalse(any(board.generate_castling_moves(bg.BB_ALL & ~board.kings)))
 
         # Rook on h1 not selected.
-        moves = board.generate_castling_moves(chess.BB_ALL, chess.BB_ALL & ~chess.BB_H1)
+        moves = board.generate_castling_moves(bg.BB_ALL, bg.BB_ALL & ~bg.BB_H1)
         self.assertEqual(len(list(moves)), 1)
 
     def test_castling_right_not_destroyed_bug(self):
@@ -520,32 +552,35 @@ class BoardTestCase(unittest.TestCase):
         self.assertFalse(board.is_legal(chess.Move.from_uci("g1f1")))
 
     def test_find_move(self):
+        bg = chess.BG_Square
         board = chess.Board("4k3/1P6/8/8/8/8/3P4/4K2R w K - 0 1")
 
         # Pawn moves.
-        self.assertEqual(board.find_move(chess.D2, chess.D4), chess.Move.from_uci("d2d4"))
-        self.assertEqual(board.find_move(chess.B7, chess.B8), chess.Move.from_uci("b7b8q"))
-        self.assertEqual(board.find_move(chess.B7, chess.B8, chess.KNIGHT), chess.Move.from_uci("b7b8n"))
+        self.assertEqual(board.find_move(bg.D2, bg.D4), chess.Move.from_uci("d2d4"))
+        self.assertEqual(board.find_move(bg.B7, bg.B8), chess.Move.from_uci("b7b8q"))
+        self.assertEqual(board.find_move(bg.B7, bg.B8, chess.KNIGHT), chess.Move.from_uci("b7b8n"))
 
         # Illegal moves.
         with self.assertRaises(chess.IllegalMoveError):
-            board.find_move(chess.D2, chess.D8)
+            board.find_move(bg.D2, bg.D8)
         with self.assertRaises(chess.IllegalMoveError):
-            board.find_move(chess.E1, chess.A1)
+            board.find_move(bg.E1, bg.A1)
 
         # Castling.
-        self.assertEqual(board.find_move(chess.E1, chess.G1), chess.Move.from_uci("e1g1"))
-        self.assertEqual(board.find_move(chess.E1, chess.H1), chess.Move.from_uci("e1g1"))
+        self.assertEqual(board.find_move(bg.E1, bg.G1), chess.Move.from_uci("e1g1"))
+        self.assertEqual(board.find_move(bg.E1, bg.H1), chess.Move.from_uci("e1g1"))
         board.chess960 = True
-        self.assertEqual(board.find_move(chess.E1, chess.H1), chess.Move.from_uci("e1h1"))
+        self.assertEqual(board.find_move(bg.E1, bg.H1), chess.Move.from_uci("e1h1"))
 
     def test_clean_castling_rights(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
         board.set_board_fen("k6K/8/8/pppppppp/8/8/8/QqQq4")
-        self.assertEqual(board.clean_castling_rights(), chess.BB_EMPTY)
+        self.assertEqual(board.clean_castling_rights(), bg.BB_EMPTY)
         self.assertEqual(board.fen(), "k6K/8/8/pppppppp/8/8/8/QqQq4 w - - 0 1")
         board.push_san("Qxc5")
-        self.assertEqual(board.clean_castling_rights(), chess.BB_EMPTY)
+        self.assertEqual(board.clean_castling_rights(), bg.BB_EMPTY)
         self.assertEqual(board.fen(), "k6K/8/8/ppQppppp/8/8/8/Qq1q4 b - - 0 1")
 
     def test_insufficient_material(self):
@@ -893,6 +928,8 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(chess.polyglot.zobrist_hash(board), 0x5c3f9b829b279560)
 
     def test_castling_move_generation_bug(self):
+        bg = chess.BG_Square
+
         # Specific test position right after castling.
         fen = "rnbqkbnr/2pp1ppp/8/4p3/2BPP3/P1N2N2/PB3PPP/2RQ1RK1 b kq - 1 10"
         board = chess.Board(fen)
@@ -925,11 +962,11 @@ class BoardTestCase(unittest.TestCase):
 
         # Check that board is still consistent.
         self.assertEqual(board.fen(), fen)
-        self.assertTrue(board.kings & chess.BB_G1)
-        self.assertTrue(board.occupied & chess.BB_G1)
-        self.assertTrue(board.occupied_co[chess.WHITE] & chess.BB_G1)
-        self.assertEqual(board.piece_at(chess.G1), chess.Piece(chess.KING, chess.WHITE))
-        self.assertEqual(board.piece_at(chess.C1), chess.Piece(chess.ROOK, chess.WHITE))
+        self.assertTrue(board.kings & bg.BB_G1)
+        self.assertTrue(board.occupied & bg.BB_G1)
+        self.assertTrue(board.occupied_co[chess.WHITE] & bg.BB_G1)
+        self.assertEqual(board.piece_at(bg.G1), chess.Piece(chess.KING, chess.WHITE))
+        self.assertEqual(board.piece_at(bg.C1), chess.Piece(chess.ROOK, chess.WHITE))
 
     def test_move_generation_bug(self):
         # Specific problematic position.
@@ -991,25 +1028,27 @@ class BoardTestCase(unittest.TestCase):
         self.assertFalse(a == b)
 
     def test_status(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
         self.assertEqual(board.status(), chess.STATUS_VALID)
         self.assertTrue(board.is_valid())
 
-        board.remove_piece_at(chess.H1)
+        board.remove_piece_at(bg.H1)
         self.assertTrue(board.status() & chess.STATUS_BAD_CASTLING_RIGHTS)
 
-        board.remove_piece_at(chess.E8)
+        board.remove_piece_at(bg.E8)
         self.assertTrue(board.status() & chess.STATUS_NO_BLACK_KING)
 
         # The en passant square should be set even if no capture is actually
         # possible.
         board = chess.Board()
         board.push_san("e4")
-        self.assertEqual(board.ep_square, chess.E3)
+        self.assertEqual(board.ep_square, bg.E3)
         self.assertEqual(board.status(), chess.STATUS_VALID)
 
         # But there must indeed be a pawn there.
-        board.remove_piece_at(chess.E4)
+        board.remove_piece_at(bg.E4)
         self.assertEqual(board.status(), chess.STATUS_INVALID_EP_SQUARE)
 
         # King must be between the two rooks.
@@ -1054,8 +1093,10 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.status(), chess.STATUS_VALID)
 
     def test_one_king_movegen(self):
+        bg = chess.BG_Square
+
         board = chess.Board.empty()
-        board.set_piece_at(chess.A1, chess.Piece(chess.KING, chess.WHITE))
+        board.set_piece_at(bg.A1, chess.Piece(chess.KING, chess.WHITE))
         self.assertFalse(board.is_valid())
         self.assertEqual(board.legal_moves.count(), 3)
         self.assertEqual(board.pseudo_legal_moves.count(), 3)
@@ -1068,8 +1109,10 @@ class BoardTestCase(unittest.TestCase):
 
     def test_epd(self):
         # Create an EPD with a move and a string.
+        bg = chess.BG_Square
+
         board = chess.Board("1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - 0 1")
-        epd = board.epd(bm=chess.Move(chess.D6, chess.D1), id="BK.01")
+        epd = board.epd(bm=chess.Move(bg.D6, bg.D1), id="BK.01")
         self.assertIn(epd, [
             "1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - bm Qd1+; id \"BK.01\";",
             "1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - id \"BK.01\"; bm Qd1+;"])
@@ -1102,7 +1145,7 @@ class BoardTestCase(unittest.TestCase):
         board = chess.Board()
         operations = board.set_epd("r2qnrnk/p2b2b1/1p1p2pp/2pPpp2/1PP1P3/PRNBB3/3QNPPP/5RK1 w - - bm f4; id \"BK.24\";")
         self.assertEqual(board.fen(), "r2qnrnk/p2b2b1/1p1p2pp/2pPpp2/1PP1P3/PRNBB3/3QNPPP/5RK1 w - - 0 1")
-        self.assertIn(chess.Move(chess.F2, chess.F4), operations["bm"])
+        self.assertIn(chess.Move(bg.F2, bg.F4), operations["bm"])
         self.assertEqual(operations["id"], "BK.24")
 
         # Test loading an EPD with half-move counter operations.
@@ -1115,7 +1158,7 @@ class BoardTestCase(unittest.TestCase):
         # Test context of parsed SANs.
         board = chess.Board()
         operations = board.set_epd("4k3/8/8/2N5/8/8/8/4K3 w - - test Ne4")
-        self.assertEqual(operations["test"], chess.Move(chess.C5, chess.E4))
+        self.assertEqual(operations["test"], chess.Move(bg.C5, bg.E4))
 
         # Test parsing EPD with a set of moves.
         board = chess.Board()
@@ -1174,58 +1217,65 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.fen(), fen)
 
     def test_attackers(self):
+        bg = chess.BG_Square
         board = chess.Board("r1b1k2r/pp1n1ppp/2p1p3/q5B1/1b1P4/P1n1PN2/1P1Q1PPP/2R1KB1R b Kkq - 3 10")
 
-        attackers = board.attackers(chess.WHITE, chess.C3)
+        attackers = board.attackers(chess.WHITE, bg.C3)
         self.assertEqual(len(attackers), 3)
-        self.assertIn(chess.C1, attackers)
-        self.assertIn(chess.D2, attackers)
-        self.assertIn(chess.B2, attackers)
-        self.assertNotIn(chess.D4, attackers)
-        self.assertNotIn(chess.E1, attackers)
+        self.assertIn(bg.C1, attackers)
+        self.assertIn(bg.D2, attackers)
+        self.assertIn(bg.B2, attackers)
+        self.assertNotIn(bg.D4, attackers)
+        self.assertNotIn(bg.E1, attackers)
 
     def test_en_passant_attackers(self):
+        bg = chess.BG_Square
+
         board = chess.Board("4k3/8/8/8/4pPp1/8/8/4K3 b - f3 0 1")
 
         # Attacking the en passant square.
-        attackers = board.attackers(chess.BLACK, chess.F3)
+        attackers = board.attackers(chess.BLACK, bg.F3)
         self.assertEqual(len(attackers), 2)
-        self.assertIn(chess.E4, attackers)
-        self.assertIn(chess.G4, attackers)
+        self.assertIn(bg.E4, attackers)
+        self.assertIn(bg.G4, attackers)
 
         # Not attacking the pawn directly.
-        attackers = board.attackers(chess.BLACK, chess.F4)
-        self.assertEqual(attackers, chess.BB_EMPTY)
+        attackers = board.attackers(chess.BLACK, bg.F4)
+        self.assertEqual(attackers, bg.BB_EMPTY)
 
     def test_attacks(self):
+        bg = chess.BG_Square
+
         board = chess.Board("5rk1/p5pp/2p3p1/1p1pR3/3P2P1/2N5/PP3n2/2KB4 w - - 1 26")
 
-        attacks = board.attacks(chess.E5)
+        attacks = board.attacks(bg.E5)
         self.assertEqual(len(attacks), 11)
-        self.assertIn(chess.D5, attacks)
-        self.assertIn(chess.E1, attacks)
-        self.assertIn(chess.F5, attacks)
-        self.assertNotIn(chess.E5, attacks)
-        self.assertNotIn(chess.C5, attacks)
-        self.assertNotIn(chess.F4, attacks)
+        self.assertIn(bg.D5, attacks)
+        self.assertIn(bg.E1, attacks)
+        self.assertIn(bg.F5, attacks)
+        self.assertNotIn(bg.E5, attacks)
+        self.assertNotIn(bg.C5, attacks)
+        self.assertNotIn(bg.F4, attacks)
 
-        pawn_attacks = board.attacks(chess.B2)
-        self.assertIn(chess.A3, pawn_attacks)
-        self.assertNotIn(chess.B3, pawn_attacks)
+        pawn_attacks = board.attacks(bg.B2)
+        self.assertIn(bg.A3, pawn_attacks)
+        self.assertNotIn(bg.B3, pawn_attacks)
 
-        self.assertFalse(board.attacks(chess.G1))
+        self.assertFalse(board.attacks(bg.G1))
 
     def test_clear(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
         board.clear()
 
         self.assertEqual(board.turn, chess.WHITE)
         self.assertEqual(board.fullmove_number, 1)
         self.assertEqual(board.halfmove_clock, 0)
-        self.assertEqual(board.castling_rights, chess.BB_EMPTY)
+        self.assertEqual(board.castling_rights, bg.BB_EMPTY)
         self.assertFalse(board.ep_square)
 
-        self.assertFalse(board.piece_at(chess.E1))
+        self.assertFalse(board.piece_at(bg.E1))
         self.assertEqual(chess.popcount(board.occupied), 0)
 
     def test_threefold_repetition(self):
@@ -1404,16 +1454,18 @@ class BoardTestCase(unittest.TestCase):
         self.assertFalse(board.is_legal(move))
 
     def test_pseudo_legality(self):
+        bg = chess.BG_Square
+
         sample_moves = [
-            chess.Move(chess.A2, chess.A4),
-            chess.Move(chess.C1, chess.E3),
-            chess.Move(chess.G8, chess.F6),
-            chess.Move(chess.D7, chess.D8, chess.QUEEN),
-            chess.Move(chess.E5, chess.E4),
+            chess.Move(bg.A2, bg.A4),
+            chess.Move(bg.C1, bg.E3),
+            chess.Move(bg.G8, bg.F6),
+            chess.Move(bg.D7, bg.D8, chess.QUEEN),
+            chess.Move(bg.E5, bg.E4),
         ]
 
         sample_fens = [
-            chess.STARTING_FEN,
+            bg.STARTING_FEN,
             "rnbqkbnr/pp1ppppp/2p5/8/6P1/2P5/PP1PPP1P/RNBQKBNR b KQkq - 0 1",
             "rnb1kbnr/ppq1pppp/2pp4/8/6P1/2P5/PP1PPPBP/RNBQK1NR w KQkq - 0 1",
             "rn2kbnr/p1q1ppp1/1ppp3p/8/4B1b1/2P4P/PPQPPP2/RNB1K1NR w KQkq - 0 1",
@@ -1445,6 +1497,8 @@ class BoardTestCase(unittest.TestCase):
                     self.assertFalse(board.is_pseudo_legal(move))
 
     def test_pseudo_legal_castling_masks(self):
+        bg = chess.BG_Square
+
         board = chess.Board("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1")
         kingside = chess.Move.from_uci("e1g1")
         queenside = chess.Move.from_uci("e1c1")
@@ -1453,17 +1507,19 @@ class BoardTestCase(unittest.TestCase):
         self.assertIn(kingside, moves)
         self.assertIn(queenside, moves)
 
-        moves = list(board.generate_pseudo_legal_moves(from_mask=chess.BB_RANK_2))
+        moves = list(board.generate_pseudo_legal_moves(from_mask=bg.BB_RANK_2))
         self.assertEqual(moves, [])
 
-        moves = list(board.generate_pseudo_legal_moves(to_mask=chess.BB_A1))
+        moves = list(board.generate_pseudo_legal_moves(to_mask=bg.BB_A1))
         self.assertNotIn(kingside, moves)
         self.assertIn(queenside, moves)
 
     def test_pieces(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
         king = board.pieces(chess.KING, chess.WHITE)
-        self.assertIn(chess.E1, king)
+        self.assertIn(bg.E1, king)
         self.assertEqual(len(king), 1)
 
     def test_string_conversion(self):
@@ -1533,28 +1589,32 @@ class BoardTestCase(unittest.TestCase):
         self.assertTrue(board.is_castling(board.parse_xboard("O-O")))
 
     def test_pin(self):
+        bg = chess.BG_Square
+
         board = chess.Board("rnb1k1nr/2pppppp/3P4/8/1b5q/8/PPPNPBPP/RNBQKB1R w KQkq - 0 1")
-        self.assertTrue(board.is_pinned(chess.WHITE, chess.F2))
-        self.assertTrue(board.is_pinned(chess.WHITE, chess.D2))
-        self.assertFalse(board.is_pinned(chess.WHITE, chess.E1))
-        self.assertFalse(board.is_pinned(chess.BLACK, chess.H4))
-        self.assertFalse(board.is_pinned(chess.BLACK, chess.E8))
+        self.assertTrue(board.is_pinned(chess.WHITE, bg.F2))
+        self.assertTrue(board.is_pinned(chess.WHITE, bg.D2))
+        self.assertFalse(board.is_pinned(chess.WHITE, bg.E1))
+        self.assertFalse(board.is_pinned(chess.BLACK, bg.H4))
+        self.assertFalse(board.is_pinned(chess.BLACK, bg.E8))
 
-        self.assertEqual(board.pin(chess.WHITE, chess.B1), chess.BB_ALL)
+        self.assertEqual(board.pin(chess.WHITE, bg.B1), bg.BB_ALL)
 
-        self.assertEqual(board.pin(chess.WHITE, chess.F2), chess.BB_E1 | chess.BB_F2 | chess.BB_G3 | chess.BB_H4)
+        self.assertEqual(board.pin(chess.WHITE, bg.F2), bg.BB_E1 | bg.BB_F2 | bg.BB_G3 | bg.BB_H4)
 
-        self.assertEqual(board.pin(chess.WHITE, chess.D2), chess.BB_E1 | chess.BB_D2 | chess.BB_C3 | chess.BB_B4 | chess.BB_A5)
+        self.assertEqual(board.pin(chess.WHITE, bg.D2), bg.BB_E1 | bg.BB_D2 | bg.BB_C3 | bg.BB_B4 | bg.BB_A5)
 
-        self.assertEqual(chess.Board(None).pin(chess.WHITE, chess.F7), chess.BB_ALL)
+        self.assertEqual(chess.Board(None).pin(chess.WHITE, bg.F7), bg.BB_ALL)
 
     def test_pin_in_check(self):
+        bg = chess.BG_Square
+
         # The knight on the eighth rank is on the outer side of the rank attack.
         board = chess.Board("1n1R2k1/2b1qpp1/p3p2p/1p6/1P2Q2P/4PNP1/P4PB1/6K1 b - - 0 1")
-        self.assertFalse(board.is_pinned(chess.BLACK, chess.B8))
+        self.assertFalse(board.is_pinned(chess.BLACK, bg.B8))
 
         # The empty square e8 would be considered pinned.
-        self.assertTrue(board.is_pinned(chess.BLACK, chess.E8))
+        self.assertTrue(board.is_pinned(chess.BLACK, bg.E8))
 
     def test_impossible_en_passant(self):
         # Not a pawn there.
@@ -1653,11 +1713,13 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(len(plc), 5)
 
     def test_castling_is_legal(self):
+        bg = chess.BG_Square
+
         board = chess.Board("rnbqkbnr/5p2/1pp3pp/p2P4/6P1/2NPpN2/PPP1Q1BP/R3K2R w Qq - 0 11")
         self.assertFalse(board.is_legal(chess.Move.from_uci("e1g1")))
         self.assertFalse(board.is_legal(chess.Move.from_uci("e1h1")))
 
-        board.castling_rights |= chess.BB_H1
+        board.castling_rights |= bg.BB_H1
         self.assertTrue(board.is_legal(chess.Move.from_uci("e1g1")))
         self.assertTrue(board.is_legal(chess.Move.from_uci("e1h1")))
 
@@ -1674,6 +1736,8 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board, mirrored)
 
     def test_chess960_pos(self):
+        bg = chess.BG_Square
+
         board = chess.Board()
 
         board.set_chess960_pos(0)
@@ -1685,7 +1749,7 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.chess960_pos(), 631)
 
         board.set_chess960_pos(518)
-        self.assertEqual(board.board_fen(), chess.STARTING_BOARD_FEN)
+        self.assertEqual(board.board_fen(), bg.STARTING_BOARD_FEN)
         self.assertEqual(board.chess960_pos(), 518)
 
         board.set_chess960_pos(959)
@@ -1719,9 +1783,11 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.fen(), "8/8/8/B2p3Q/2qPp1P1/b7/2P2P1P/4K2k w - - 0 2")
 
     def test_impossible_check_due_to_en_passant(self):
+        bg = chess.BG_Square
+
         board = chess.Board("rnbqk1nr/bb3p1p/1q2r3/2pPp3/3P4/7P/1PP1NpPP/R1BQKBNR w KQkq c6")
         self.assertEqual(board.status(), chess.STATUS_IMPOSSIBLE_CHECK)
-        self.assertEqual(board.ep_square, chess.C6)
+        self.assertEqual(board.ep_square, bg.C6)
         self.assertTrue(board.has_pseudo_legal_en_passant())
         self.assertFalse(board.has_legal_en_passant())
         self.assertEqual(len(list(board.legal_moves)), 2)
@@ -1781,10 +1847,12 @@ class BaseBoardTestCase(unittest.TestCase):
 class SquareSetTestCase(unittest.TestCase):
 
     def test_equality(self):
-        a1 = chess.SquareSet(chess.BB_RANK_4)
-        a2 = chess.SquareSet(chess.BB_RANK_4)
-        b1 = chess.SquareSet(chess.BB_RANK_5 | chess.BB_RANK_6)
-        b2 = chess.SquareSet(chess.BB_RANK_5 | chess.BB_RANK_6)
+        bg = chess.BG_Square
+
+        a1 = chess.SquareSet(bg.BB_RANK_4)
+        a2 = chess.SquareSet(bg.BB_RANK_4)
+        b1 = chess.SquareSet(bg.BB_RANK_5 | bg.BB_RANK_6)
+        b2 = chess.SquareSet(bg.BB_RANK_5 | bg.BB_RANK_6)
 
         self.assertEqual(a1, a2)
         self.assertEqual(b1, b2)
@@ -1796,13 +1864,14 @@ class SquareSetTestCase(unittest.TestCase):
         self.assertFalse(a1 == b1)
         self.assertFalse(a2 == b2)
 
-        self.assertEqual(chess.SquareSet(chess.BB_ALL), chess.BB_ALL)
-        self.assertEqual(chess.BB_ALL, chess.SquareSet(chess.BB_ALL))
+        self.assertEqual(chess.SquareSet(bg.BB_ALL), bg.BB_ALL)
+        self.assertEqual(bg.BB_ALL, chess.SquareSet(bg.BB_ALL))
 
         self.assertEqual(int(chess.SquareSet(chess.SquareSet(999))), 999)
-        self.assertEqual(chess.SquareSet([chess.B8]), chess.BB_B8)
+        self.assertEqual(chess.SquareSet([bg.B8]), bg.BB_B8)
 
     def test_string_conversion(self):
+        bg = chess.BG_Square
         expected = textwrap.dedent("""\
             . . . . . . . 1
             . 1 . . . . . .
@@ -1813,48 +1882,56 @@ class SquareSetTestCase(unittest.TestCase):
             . . . . . . . .
             1 1 1 1 1 1 1 1""")
 
-        bb = chess.SquareSet(chess.BB_H8 | chess.BB_B7 | chess.BB_RANK_1)
+        bb = chess.SquareSet(bg.BB_H8 | bg.BB_B7 | bg.BB_RANK_1)
         self.assertEqual(str(bb), expected)
 
     def test_iter(self):
-        bb = chess.SquareSet(chess.BB_G7 | chess.BB_G8)
-        self.assertEqual(list(bb), [chess.G7, chess.G8])
+        bg = chess.BG_Square
+
+        bb = chess.SquareSet(bg.BB_G7 | bg.BB_G8)
+        self.assertEqual(list(bb), [bg.G7, bg.G8])
 
     def test_reversed(self):
-        bb = chess.SquareSet(chess.BB_A1 | chess.BB_B1 | chess.BB_A7 | chess.BB_E1)
-        self.assertEqual(list(reversed(bb)), [chess.A7, chess.E1, chess.B1, chess.A1])
+        bg = chess.BG_Square
+
+        bb = chess.SquareSet(bg.BB_A1 | bg.BB_B1 | bg.BB_A7 | bg.BB_E1)
+        self.assertEqual(list(reversed(bb)), [bg.A7, bg.E1, bg.B1, bg.A1])
 
     def test_arithmetic(self):
-        self.assertEqual(chess.SquareSet(chess.BB_RANK_2) & chess.BB_FILE_D, chess.BB_D2)
-        self.assertEqual(chess.SquareSet(chess.BB_ALL) ^ chess.BB_EMPTY, chess.BB_ALL)
-        self.assertEqual(chess.SquareSet(chess.BB_C1) | chess.BB_FILE_C, chess.BB_FILE_C)
+        bg = chess.BG_Square
 
-        bb = chess.SquareSet(chess.BB_EMPTY)
-        bb ^= chess.BB_ALL
-        self.assertEqual(bb, chess.BB_ALL)
-        bb &= chess.BB_E4
-        self.assertEqual(bb, chess.BB_E4)
-        bb |= chess.BB_RANK_4
-        self.assertEqual(bb, chess.BB_RANK_4)
+        self.assertEqual(chess.SquareSet(bg.BB_RANK_2) & bg.BB_FILE_D, bg.BB_D2)
+        self.assertEqual(chess.SquareSet(bg.BB_ALL) ^ bg.BB_EMPTY, bg.BB_ALL)
+        self.assertEqual(chess.SquareSet(bg.BB_C1) | bg.BB_FILE_C, bg.BB_FILE_C)
 
-        self.assertEqual(chess.SquareSet(chess.BB_F3) << 1, chess.BB_G3)
-        self.assertEqual(chess.SquareSet(chess.BB_C8) >> 2, chess.BB_A8)
+        bb = chess.SquareSet(bg.BB_EMPTY)
+        bb ^= bg.BB_ALL
+        self.assertEqual(bb, bg.BB_ALL)
+        bb &= bg.BB_E4
+        self.assertEqual(bb, bg.BB_E4)
+        bb |= bg.BB_RANK_4
+        self.assertEqual(bb, bg.BB_RANK_4)
 
-        bb = chess.SquareSet(chess.BB_D1)
+        self.assertEqual(chess.SquareSet(bg.BB_F3) << 1, bg.BB_G3)
+        self.assertEqual(chess.SquareSet(bg.BB_C8) >> 2, bg.BB_A8)
+
+        bb = chess.SquareSet(bg.BB_D1)
         bb <<= 1
-        self.assertEqual(bb, chess.BB_E1)
+        self.assertEqual(bb, bg.BB_E1)
         bb >>= 2
-        self.assertEqual(bb, chess.BB_C1)
+        self.assertEqual(bb, bg.BB_C1)
 
     def test_immutable_set_operations(self):
+        bg = chess.BG_Square
+
         examples = [
-            chess.BB_EMPTY,
-            chess.BB_A1,
-            chess.BB_A2,
-            chess.BB_RANK_1,
-            chess.BB_RANK_2,
-            chess.BB_FILE_A,
-            chess.BB_FILE_E,
+            bg.BB_EMPTY,
+            bg.BB_A1,
+            bg.BB_A2,
+            bg.BB_RANK_1,
+            bg.BB_RANK_2,
+            bg.BB_FILE_A,
+            bg.BB_FILE_E,
         ]
 
         for a in examples:
@@ -1873,60 +1950,67 @@ class SquareSetTestCase(unittest.TestCase):
                 self.assertEqual(set(a).symmetric_difference(set(b)), set(a.symmetric_difference(b)))
 
     def test_mutable_set_operations(self):
-        squares = chess.SquareSet(chess.BB_A1)
-        squares.update(chess.BB_FILE_H)
-        self.assertEqual(squares, chess.BB_A1 | chess.BB_FILE_H)
+        bg = chess.BG_Square
 
-        squares.intersection_update(chess.BB_RANK_8)
-        self.assertEqual(squares, chess.BB_H8)
+        squares = chess.SquareSet(bg.BB_A1)
+        squares.update(bg.BB_FILE_H)
+        self.assertEqual(squares, bg.BB_A1 | bg.BB_FILE_H)
 
-        squares.difference_update(chess.BB_A1)
-        self.assertEqual(squares, chess.BB_H8)
+        squares.intersection_update(bg.BB_RANK_8)
+        self.assertEqual(squares, bg.BB_H8)
 
-        squares.symmetric_difference_update(chess.BB_A1)
-        self.assertEqual(squares, chess.BB_A1 | chess.BB_H8)
+        squares.difference_update(bg.BB_A1)
+        self.assertEqual(squares, bg.BB_H8)
 
-        squares.add(chess.A3)
-        self.assertEqual(squares, chess.BB_A1 | chess.BB_A3 | chess.BB_H8)
+        squares.symmetric_difference_update(bg.BB_A1)
+        self.assertEqual(squares, bg.BB_A1 | bg.BB_H8)
 
-        squares.remove(chess.H8)
-        self.assertEqual(squares, chess.BB_A1 | chess.BB_A3)
+        squares.add(bg.A3)
+        self.assertEqual(squares, bg.BB_A1 | bg.BB_A3 | bg.BB_H8)
+
+        squares.remove(bg.H8)
+        self.assertEqual(squares, bg.BB_A1 | bg.BB_A3)
 
         with self.assertRaises(KeyError):
-            squares.remove(chess.H8)
+            squares.remove(bg.H8)
 
-        squares.discard(chess.H8)
+        squares.discard(bg.H8)
 
-        squares.discard(chess.A1)
-        self.assertEqual(squares, chess.BB_A3)
+        squares.discard(bg.A1)
+        self.assertEqual(squares, bg.BB_A3)
 
         squares.clear()
-        self.assertEqual(squares, chess.BB_EMPTY)
+        self.assertEqual(squares, bg.BB_EMPTY)
 
         with self.assertRaises(KeyError):
             squares.pop()
 
-        squares.add(chess.C7)
-        self.assertEqual(squares.pop(), chess.C7)
-        self.assertEqual(squares, chess.BB_EMPTY)
+        squares.add(bg.C7)
+        self.assertEqual(squares.pop(), bg.C7)
+        self.assertEqual(squares, bg.BB_EMPTY)
 
     def test_from_square(self):
-        self.assertEqual(chess.SquareSet.from_square(chess.H5), chess.BB_H5)
-        self.assertEqual(chess.SquareSet.from_square(chess.C2), chess.BB_C2)
+        bg = chess.BG_Square
+        self.assertEqual(chess.SquareSet.from_square(bg.H5), bg.BB_H5)
+        self.assertEqual(chess.SquareSet.from_square(bg.C2), bg.BB_C2)
 
     def test_carry_rippler(self):
-        self.assertEqual(sum(1 for _ in chess.SquareSet(chess.BB_D1).carry_rippler()), 2 ** 1)
-        self.assertEqual(sum(1 for _ in chess.SquareSet(chess.BB_FILE_B).carry_rippler()), 2 ** 8)
+        bg = chess.BG_Square
+        self.assertEqual(sum(1 for _ in chess.SquareSet(bg.BB_D1).carry_rippler()), 2 ** 1)
+        self.assertEqual(sum(1 for _ in chess.SquareSet(bg.BB_FILE_B).carry_rippler()), 2 ** 8)
 
     def test_mirror(self):
+        bg = chess.BG_Square
         self.assertEqual(chess.SquareSet(0x00a2_0900_0004_a600).mirror(), 0x00a6_0400_0009_a200)
         self.assertEqual(chess.SquareSet(0x1e22_2212_0e0a_1222).mirror(), 0x2212_0a0e_1222_221e)
 
     def test_flip(self):
-        self.assertEqual(chess.flip_vertical(chess.BB_ALL), chess.BB_ALL)
-        self.assertEqual(chess.flip_horizontal(chess.BB_ALL), chess.BB_ALL)
-        self.assertEqual(chess.flip_diagonal(chess.BB_ALL), chess.BB_ALL)
-        self.assertEqual(chess.flip_anti_diagonal(chess.BB_ALL), chess.BB_ALL)
+        bg = chess.BG_Square
+
+        self.assertEqual(chess.flip_vertical(bg.BB_ALL), bg.BB_ALL)
+        self.assertEqual(chess.flip_horizontal(bg.BB_ALL), bg.BB_ALL)
+        self.assertEqual(chess.flip_diagonal(bg.BB_ALL), bg.BB_ALL)
+        self.assertEqual(chess.flip_anti_diagonal(bg.BB_ALL), bg.BB_ALL)
 
         s = chess.SquareSet(0x1e22_2212_0e0a_1222)  # Letter R
         self.assertEqual(chess.flip_vertical(s), 0x2212_0a0e_1222_221e)
@@ -1935,19 +2019,24 @@ class SquareSetTestCase(unittest.TestCase):
         self.assertEqual(chess.flip_anti_diagonal(s), 0x00ff_1131_4986_0000)
 
     def test_len_of_complenent(self):
-        squares = chess.SquareSet(~chess.BB_ALL)
+        bg = chess.BG_Square
+
+        squares = chess.SquareSet(~bg.BB_ALL)
         self.assertEqual(len(squares), 0)
 
-        squares = ~chess.SquareSet(chess.BB_BACKRANKS)
+        squares = ~chess.SquareSet(bg.BB_BACKRANKS)
         self.assertEqual(len(squares), 48)
 
     def test_int_conversion(self):
-        self.assertEqual(int(chess.SquareSet(chess.BB_CENTER)), 0x0000_0018_1800_0000)
-        self.assertEqual(hex(chess.SquareSet(chess.BB_CENTER)), "0x1818000000")
-        self.assertEqual(bin(chess.SquareSet(chess.BB_CENTER)), "0b1100000011000000000000000000000000000")
+        bg = chess.BG_Square
+
+        self.assertEqual(int(chess.SquareSet(bg.BB_CENTER)), 0x0000_0018_1800_0000)
+        self.assertEqual(hex(chess.SquareSet(bg.BB_CENTER)), "0x1818000000")
+        self.assertEqual(bin(chess.SquareSet(bg.BB_CENTER)), "0b1100000011000000000000000000000000000")
 
     def test_tolist(self):
-        self.assertEqual(chess.SquareSet(chess.BB_LIGHT_SQUARES).tolist().count(True), 32)
+        bg = chess.BG_Square
+        self.assertEqual(chess.SquareSet(bg.BB_LIGHT_SQUARES).tolist().count(True), 32)
 
     def test_flip_ducktyping(self):
         bb = 0x1e22_2212_0e0a_1222
@@ -2155,6 +2244,8 @@ class PgnTestCase(unittest.TestCase):
         self.assertEqual(str(game), "*")
 
     def test_setup(self):
+        bg = chess.BG_Square
+
         game = chess.pgn.Game()
         self.assertEqual(game.board(), chess.Board())
         self.assertNotIn("FEN", game.headers)
@@ -2167,13 +2258,13 @@ class PgnTestCase(unittest.TestCase):
         self.assertEqual(game.headers["SetUp"], "1")
         self.assertNotIn("Variant", game.headers)
 
-        game.setup(chess.STARTING_FEN)
+        game.setup(bg.STARTING_FEN)
         self.assertNotIn("FEN", game.headers)
         self.assertNotIn("SetUp", game.headers)
         self.assertNotIn("Variant", game.headers)
 
         # Setup again, while starting FEN is already set.
-        game.setup(chess.STARTING_FEN)
+        game.setup(bg.STARTING_FEN)
         self.assertNotIn("FEN", game.headers)
         self.assertNotIn("SetUp", game.headers)
         self.assertNotIn("Variant", game.headers)
@@ -2381,10 +2472,12 @@ class PgnTestCase(unittest.TestCase):
         self.assertEqual(len(node.nags), 1)
 
     def test_tree_traversal(self):
+        bg = chess.BG_Square
+
         game = chess.pgn.Game()
-        node = game.add_variation(chess.Move(chess.E2, chess.E4))
-        alternative_node = game.add_variation(chess.Move(chess.D2, chess.D4))
-        end_node = node.add_variation(chess.Move(chess.E7, chess.E5))
+        node = game.add_variation(chess.Move(bg.E2, bg.E4))
+        alternative_node = game.add_variation(chess.Move(bg.D2, bg.D4))
+        end_node = node.add_variation(chess.Move(bg.E7, bg.E5))
 
         self.assertEqual(game.root(), game)
         self.assertEqual(node.root(), game)
@@ -2412,9 +2505,11 @@ class PgnTestCase(unittest.TestCase):
         self.assertTrue(end_node.is_end())
 
     def test_promote_demote(self):
+        bg = chess.BG_Square
+
         game = chess.pgn.Game()
-        a = game.add_variation(chess.Move(chess.A2, chess.A3))
-        b = game.add_variation(chess.Move(chess.B2, chess.B3))
+        a = game.add_variation(chess.Move(bg.A2, bg.A3))
+        b = game.add_variation(chess.Move(bg.B2, bg.B3))
 
         self.assertTrue(a.is_main_variation())
         self.assertFalse(b.is_main_variation())
@@ -2430,7 +2525,7 @@ class PgnTestCase(unittest.TestCase):
         game.demote(b)
         self.assertTrue(a.is_main_variation())
 
-        c = game.add_main_variation(chess.Move(chess.C2, chess.C3))
+        c = game.add_main_variation(chess.Move(bg.C2, bg.C3))
         self.assertTrue(c.is_main_variation())
         self.assertFalse(a.is_main_variation())
         self.assertFalse(b.is_main_variation())
@@ -2778,16 +2873,20 @@ class PgnTestCase(unittest.TestCase):
         self.assertTrue(isinstance(node, MyGameNode))
 
     def test_recursion(self):
+        bg = chess.BG_Square
+
         board = chess.Board("4k3/8/8/8/8/8/8/4K3 w - - 0 1")
         for _ in range(1000):
-            board.push(chess.Move(chess.E1, chess.E2))
-            board.push(chess.Move(chess.E8, chess.E7))
-            board.push(chess.Move(chess.E2, chess.E1))
-            board.push(chess.Move(chess.E7, chess.E8))
+            board.push(chess.Move(bg.E1, bg.E2))
+            board.push(chess.Move(bg.E8, bg.E7))
+            board.push(chess.Move(bg.E2, bg.E1))
+            board.push(chess.Move(bg.E7, bg.E8))
         game = chess.pgn.Game.from_board(board)
         self.assertTrue(str(game).endswith("2000. Ke1 Ke8 1/2-1/2"))
 
     def test_annotations(self):
+        bg = chess.BG_Square
+
         game = chess.pgn.Game()
         game.comment = "foo [%bar] baz"
 
@@ -2808,7 +2907,7 @@ class PgnTestCase(unittest.TestCase):
         self.assertEqual(game.eval_depth(), 5)
 
         self.assertEqual(game.arrows(), [])
-        game.set_arrows([(chess.A1, chess.A1), chess.svg.Arrow(chess.A1, chess.H1, color="red"), chess.svg.Arrow(chess.B1, chess.B8)])
+        game.set_arrows([(bg.A1, bg.A1), chess.svg.Arrow(bg.A1, bg.H1, color="red"), chess.svg.Arrow(bg.B1, bg.B8)])
         self.assertEqual(game.comment, "[%csl Ga1][%cal Ra1h1,Gb1b8] foo [%bar] baz [%clk 3:25:45] [%eval #1,5]")
         arrows = game.arrows()
         self.assertEqual(len(arrows), 3)
@@ -4122,6 +4221,7 @@ class GaviotaTestCase(unittest.TestCase):
 
 
 class SvgTestCase(unittest.TestCase):
+    H8 = chess.BG_Square.H8
 
     def test_svg_board(self):
         svg = chess.BaseBoard("4k3/8/8/8/8/8/8/4KB2")._repr_svg_()
@@ -4129,11 +4229,14 @@ class SvgTestCase(unittest.TestCase):
         self.assertNotIn("black queen", svg)
 
     def test_svg_arrows(self):
-        svg = chess.svg.board(arrows=[(chess.A1, chess.A1)])
+        A1 = chess.BG_Square.A1
+        H8 = chess.BG_Square.H8
+
+        svg = chess.svg.board(arrows=[(A1, A1)])
         self.assertIn("<circle", svg)
         self.assertNotIn("<line", svg)
 
-        svg = chess.svg.board(arrows=[chess.svg.Arrow(chess.A1, chess.H8)])
+        svg = chess.svg.board(arrows=[chess.svg.Arrow(A1, H8)])
         self.assertNotIn("<circle", svg)
         self.assertIn("<line", svg)
 
@@ -4303,15 +4406,19 @@ class AtomicTestCase(unittest.TestCase):
             board.push_san("O-O-O")
 
     def test_castling_rights_explode_with_king(self):
+        bg = chess.BG_Square
+
         board = chess.variant.AtomicBoard("rnb1kbnr/pppppppp/8/4q3/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1")
         board.push_san("Qxe2#")
         self.assertEqual(board.fen(), "rnb1kbnr/pppppppp/8/8/8/8/PPPP1PPP/RNB3NR w kq - 0 2")
-        self.assertEqual(board.castling_rights, chess.BB_A8 | chess.BB_H8)
+        self.assertEqual(board.castling_rights, bg.BB_A8 | bg.BB_H8)
 
     def test_lone_king_wdl(self):
+        bg = chess.BG_Square
+
         tables = chess.syzygy.Tablebase(VariantBoard=chess.variant.AtomicBoard)
         board = chess.variant.AtomicBoard.empty()
-        board.set_piece_at(chess.D1, chess.Piece.from_symbol("k"))
+        board.set_piece_at(bg.D1, chess.Piece.from_symbol("k"))
         self.assertEqual(tables.probe_wdl(board), -2)
 
     def test_atomic_validity(self):
@@ -4434,10 +4541,11 @@ class RacingKingsTestCase(unittest.TestCase):
         self.assertEqual(board.status(), chess.STATUS_RACE_OVER)
 
     def test_race_material(self):
+        bg = chess.BG_Square
         board = chess.variant.RacingKingsBoard()
 
         # Switch color of the black rook.
-        board.set_piece_at(chess.B1, chess.Piece.from_symbol("R"))
+        board.set_piece_at(bg.B1, chess.Piece.from_symbol("R"))
         self.assertEqual(board.status(), chess.STATUS_RACE_MATERIAL)
 
     def test_legal_moves_after_end(self):
@@ -4580,9 +4688,11 @@ class ThreeCheckTestCase(unittest.TestCase):
 class CrazyhouseTestCase(unittest.TestCase):
 
     def test_pawn_drop(self):
+        bg = chess.BG_Square
+
         board = chess.variant.CrazyhouseBoard("r2q1rk1/ppp2pp1/1bnp3p/3B4/3PP1b1/4PN2/PP4PP/R2Q1RK1[BNPnp] b - - 0 13")
         P_at_e6 = chess.Move.from_uci("P@e6")
-        self.assertIn(chess.E6, board.legal_drop_squares())
+        self.assertIn(bg.E6, board.legal_drop_squares())
         self.assertIn(P_at_e6, board.generate_legal_moves())
         self.assertTrue(board.is_pseudo_legal(P_at_e6))
         self.assertTrue(board.is_legal(P_at_e6))
