@@ -38,22 +38,7 @@ import chess.svg
 import chess.syzygy
 import chess.variant
 
-
-class RaiseLogHandler(logging.StreamHandler):
-    def handle(self, record):
-        super().handle(record)
-        raise RuntimeError("was expecting no log messages")
-
-
-def catchAndSkip(signature, message=None):
-    def _decorator(f):
-        def _wrapper(self):
-            try:
-                return f(self)
-            except signature as err:
-                raise unittest.SkipTest(message or err)
-        return _wrapper
-    return _decorator
+from test_utils import RaiseLogHandler, catchAndSkip
 
 
 class SquareTestCase(unittest.TestCase):
