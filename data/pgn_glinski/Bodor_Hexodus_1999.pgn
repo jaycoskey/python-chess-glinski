@@ -1,0 +1,32 @@
+[White "Sandor Bodor"]
+[Black "Hexodus III"]
+[Result "1-0"]
+[Source "https://www.chessvariants.com/hexagonal.dir/glinski/europe99.html"]
+
+1.  h3h5     h7h6
+2.  d3d5     Nd9f8
+3.  Nh1f4    g7g6
+4.  h5g6xP   h6g6xP
+5.  Bf2d4    Nf8c6
+6.  i2i4     Bf10h6
+7.  g4g5     k7k6
+8.  Bf1c4    Nh9g7
+9.  i4i5     Bh6g8
+10. Qe1i2    i7i6
+11. k1k3     Ri8h9
+12. Ri1h2    Rh9h2xR
+13. Bf3h2xR  Qe10h8
+14. Rc1e3    d7d6
+15. b1b3     Nc6d4xB
+16. e4d4xN   Qh8g9
+17. Bh2e7xP  Bf9e7xB
+18. Re3e7xB  Bf11b3xP
+19. Nd1e4    Bb3d4xP
+20. Ne4d6xP  Ng7d6xN
+21. Bc4d6xN  Qg9f9
+22. Re7e5    Bd4b6
+23. Bd6c4    Qf9g7
+24. Qi2h4    Qg7i5xP
+25. Re5e9+   Kg10f11
+26. Re9f9+   Kf11e10
+27. Qh4h8#
