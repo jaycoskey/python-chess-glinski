@@ -1,0 +1,79 @@
+; Game logs taken from http://hexasakk.hupont.hu/7/rudolf-laszlo
+
+; Games played between 1981 and 1988.
+
+; Harc a világbajnoki címért
+; World title games, 1989.
+
+; Rudolf László's list of "Hexaminiatűrök": miniature games, that lasted up to 21 move pairs.
+
+[Variant "Glinski"]
+[Date "1981.03.07"]
+[White "Rudolf László"]
+[Black "Papp Károly Bóly"]
+1.g5 g6 2.Ng2 Ng9 3.Nhi3 Bxi3 4.Nxi3 c6 5.Bd4 b5? 6.Bxg9 Bxg9 7.Nk5 Rg8 8.Bxk7 i6 9.Ni3 Rk4? 10.Rxk4 Kf11 11.Qa5 Re9 12.Rd8 Rxd8 13.Qxd8 Qxd8 14.Bxd8 Bk2 15.ixk 1-0
+
+[Variant "Glinski"]
+[Site "Zsolnay k. Pécs"]
+[Date "1982-07-29"]
+[White "Rudolf László"]
+[Black "Szokodi László"]
+1.g5 g6 2.Ng2 Nc6 3.Ngi3 Bxi3 4.Nxi3 i6 5.k2 Ng7 6.Bk1 b6 7.Rk4 k5 8.Bl2 Bh9 9.h5 Rif8 10.h6 Ni8 11.Rif4 Nxh6 12.Bxk5 Nxi3 13.Bxi3 Qd9 14.Bxh9 Qxh9 15.Rk6 Ri8 16.Rl4 Rcf8 17.Be10 1-0
+
+[Variant "Glinski"]
+[Site "Zsolnay K. Pécs"]
+[Date "1982-07-30"]
+[White "Slawomir Bitner"]
+[Black "Rudolf László"]
+1.g5 g6 2.d5 Ng9 3.Ng2 Ngi6 4.Bxi6 Nxi6 5.i3 k6 6.Bd3 Bk7 7.Qe2 Bg9 8.Nh4 Nxh4 9.Bxh4 Rk4 10.k3 Bl5 11.Rf1 Rxh4 12.Ke1 Qb4 13.Kf2 Rd2 0-1
+
+[Variant "Glinski"]
+[Site "OB. Gárdony"]
+[Date "1983-05-07"]
+[White Rudolf László]
+[Black "Vályi Nagy Tamás"]
+1.g5 g6 2.Ndf4 Ng9 3.h5 Be9 4.i4 Bd6 5.Nc3 c6 6.Nxd6 cxd6 7.k3 k5 8.k4 i6 9.Bg2 Nk6 10.Kf1 Ng8 11.Rh2 h6 12.hxg6 Bxg6 13.f6 Bc5 14.Bd1 Ri7 15.d5 Bb6 16.e5 e6 17.Rb4 Rc7 18.Rxd6 Qe8 19.dxe6 fxe6 20.Qb4 Qf10 21.Rxg8 1-0
+
+[Variant "Glinski"]
+[Site "Erzsébet K. Budapest"]
+[Date "1983-11-06"]
+[White "Rudolf László"]
+[Black "Molnár József"]
+1.g5 g6 2.Ndf4 k6 3.e6 Ng9 4.Ng4 Nh6 5.Nxh6 Bxh6 6.d5 Ng7 7.Bg3 Bg8 8.Bd3 Re8 9.Re3 f6 10.Nxg6 Rf8 11.Nxf9 Qxf9 12.gxf6 Rxf6 13.Bh5 Rf8 14.Bh4 Rd8 15.Rg3 Bxd3 16.Rxd3 Qg9 17.f7 exf7 18.exf7
+i5 19.fxg7 ixh5 20.gxh7 Bg7 21.Bxg7 1-0
+
+[Variant "Glinski"]
+[Site "Nemz. vers. Varsó"]
+[Date "1984-02-03"]
+[White "Jan Borawski"]
+[Black "Rudolf László"]
+1.d5 g5 2.Bd4 Ni6 3.fxg5 Nxg5 4.e6 Nxf3 5.Qxf3 Rg7 6.Nc3 b6 7.Bb5 Nf8 8.exf7 exf7 9.Bxf8 Rixf8 10.Re3 Qc6 11.Nhf4 f5 12.Re6 Rxe6 13.dxe6 fxg4 0-1
+
+[Variant "Glinski"]
+[Site "EB Előkészítő Budapest"]
+[Date "1984-08-05"]
+[White "Kolozsvári Miklós"]
+[Black "Rudolf László"]
+1.g5 e5 2.fxe5 Ndf8 3.h4 Nxe5 4.Bh2 Be8 5.Bh3 Ni6 6.Re3 Nk3 7.d4 Nxi1 8.dxe5 Nk3 9.Bf3 Bd6 10.i3 Nh6 11.Bi4 Qxe5 12.Ndf4 Qe10 13.Ra3 Bxf4 14.Rxi8 Nxi8 15.Nxf4 g6 16.Qc1 Bxi3 17.Nxi3 Qxi3 18.Bh2 Qxe4 19.Bf3 Qi3 20.Kf1 Re10 21.Qxf7 Qi1 0-1
+
+[Variant "Glinski"]
+[Site "I.MK. Miskolc"]
+[Date "1985-09-05"]
+[White "Rutkovszky Tibor"]
+[Black "Rudolf László"]
+1.Ndf4 Ndf8 2.e6 Nhi6 3.Nhi3 g5 4.Nfh1 Bg9 5.exf7 Nxf7 6.Be2 gxf5 7.Nxf5 e5 8.Re3 Nd5 9.Bxd5 Bxd5 10.Kf1 Bd4 11.Nh6 Bxh6 12.Rxd4 Nxd4 13.Bxh6 Rxh6 14.Ni3 Rf6 15.Nf4 Qxk1 16.Rh1 Qxb1 17.Bxd4 Rxf4 18.Bf2 Rif8 19.Rg2 Ri1 0-1
+
+[Variant "Glinski"]
+[Site "MK. Budapest"]
+[Date "1988-09-03"]
+[White "Rudolf László"]
+[Black "Somlai László"]
+1.e6 d6 2.d5 Re8 3.Ndf4 dxe 4.dxe Bd8 5.Nd5 Rf9 6.Ni3 Nhf8 7.Bh4 Nxd5 8.Bxd5 Bc6 9.c4 Nb6 10.Bxc6 Qxc6 11.Qe4 Qxe4 12.Rxe4 Rd9 13.g6 Bg8 15.Rc3 fxg 16.Bxg8 Rixg8 17.Nxg6 Nxg6 18.Bxg6 Rd2 19.Kh2 Rgd9 20.Ra3?? R9d4 0-1
+
+[Variant "Glinski"]
+[Site "MK. Budapest"]
+[Date "1988-09-03"]
+[White "Somlai László"]
+[Black "Rudolf László"]
+1.Nc3 e5 2.fxe Qxe5 3.Nhe2 g5 4.Bg2 Qe10 5.Nd4 f6 6.Re3 Bg9 7.Ndb5 Re8 8.Bd6 Ref9 9.Bxf10 Qxf10 10.Bg3 Bxc3 11.Qxc3 Qf9 12.e6 Qxc3 13.Nxc3 Kf10? 14.exf Rxf6 15.Bxb7 Rb4? 16.Bd5 1-0
+

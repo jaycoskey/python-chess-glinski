@@ -1,0 +1,409 @@
+; Game logs taken from http://hexasakk.hupont.hu/8/rudolf-laszlo-100
+
+; Baha Cup
+; Baja, 1989.04.02.-04.
+; Game time: 2x1 hour
+; Final result: Quick race
+
+[Variant "Glinski"]
+[Date "1989-04-02"]
+[Round "1"]
+[White "Rudolf László"]
+[Black "Gulybán Gergely"]
+1.Ndf4 Bh6
+2.g6 Bxf4
+3.Nxf4 {eddig szokványos megnyitás, sötét következő lépését azonban nem ajánlatos követni} f6? {tálcán kínálja a Ne6-ot, s f6-on a gyalog halálra van ítélve}
+4.Ne6 Bh8 {félti a "szürke futót"}
+5.Qc3 {támadom az f6 gyalogot, s mellesleg megkötöm az e7-et} d6
+6.Nh5 Qf9
+7.Bg2! {e6 után lógna a d6 gyalog} Bk4?? {durva elnézés}
+8.Rxk4 i5? {vissza akarja nyerni a tisztet, de nem látja az f2 futómat}
+9.Rxi5 Rh8
+10.Ng3 Rg9 {nincs értelme Rc(h)f8-cal megvédeni az f6 gyalogot, mert Bd4-gyel elzavarnám az f vonalról}
+11.Nxf6 e6? {újabb hiba, saját vezérét hozta kötésbe}
+12.Nxh7 Ke10
+13.Qxf9 Rxf9
+14.Rl5 Ke9
+15.Ni4 Rd7
+16.f6 {trükk, hátha az ellenfél beveszi} exf6?? {bevette}
+17.Bg3 Rxg6
+18.Bh4! {túl egyszerű lenne sakkra ütni a c8 bástyát, az állásban még több van} Kf8
+19.Rh8 Kf9
+20.Rxh9 Kf10
+21.Rxf11 Kxf11
+22.Bxg6 {és sötét végre megelégelte a vesszőfutást.} 1-0
+
+[Variant "Glinski"]
+[Date "1989-04-02"]
+[Round "2"]
+[White "Péter István"]
+[Black "Rudolf László"]
+1.Ndf4 Ndf8
+2.g5 e5 {én nem vagyok annyira szolid, mint világos}
+3.Re3 Re8
+4.Ng4 d5
+5.Bg2 Bd7 {Támadom a gyenge f5 gyalogot, s mellesleg rejtett aknát helyezek el a h1-c8 átló}
+6.Bg3 Nhi6
+7.Ni5? {elnézi a következő fenyegetést} Nk3!
+8.Rh1 Nkxg5
+9.Nf6? {újabb hiba: 9.fxg} Bxg3
+10.Nf6! {és világos gyalogvesztéssel megúszta volna a huszárkalandot} Nxe3
+11.Qxe3 Re9
+12.Nxd7 cxd7
+13.fxe5 Nxe5
+14.Bh2 {világos is a "szürkét" szereti jobban} Nxg3
+15.Qxg3 Qc6
+16.Bf3 Bd6
+17.Nc3 Bxg2 {nekem jók a cserék}
+18.Rxg2 b5
+19.Qf5 {az f7 gyalogot szeretné lenyerni a g vonali kötés segítségével} Kf10
+20.Rg5 Qc4
+21.Rk2 d4! {gyalogáldozat az e vonal megnyitása érdekében}
+22.exd4 Qc5
+23.d5 Qb4
+24.Kg2 Rie7
+25.Qd1 Re3
+26.Rd6 Qd4
+27.Rg5?? {nehéz már jót lépni, de ennél azért voltak jobb lépések is} Qe5 0-1
+
+[Variant "Glinski"]
+[Date "1989-04-02"]
+[Round "3"]
+[White "Kövér Imre"]
+[Black "Rudolf László"]
+1.e6 fxe6
+2.Qxe6 Bg9
+3.Qe1 Re8
+4.Ni3 g5! {elnézés, de mint később kiderült áldozatnak is jó}
+5.Ng6 {erre számítottam, de csak most vettem észre, hogy a tervezett Rg7 nem megy Nk5 villa miatt} Rh6 {nincs más, ha támadni szeretnék}
+6.Nxf9 Qxf9
+7.fxg5 Ni6
+8.Rif4 Rif8
+9.h4 Bd6
+10.Rxf8 Rxf8 {az f vonal birtoklása bőven kárpótol a gyalogért}
+11.Nc3 Nk3 {olcsó trükk: Qi3-mal fenyegettem}
+12.Bh2?? {világos elébe megy az eseményeknek, pedig k2-vel simán védhette volna a fenyegetést} Nxh2
+13.Bg2 {nem lehet visszaütni Rxf2 sakk-vezér miatt} Qxk1
+14.Bh1 Bxg2
+15.Qxg2 Nk3
+16.Rd1 Rf7
+17.Nf5 Be6
+18.Qk5 {minden mindegy alapon rohan ki a vezér} Bxf5!
+19.Qxk7 Ke10
+20.Qxi7 Ke9
+21.Qi8 Ng9
+22.Rh3 {Qg10-re Rf10 jön és nincs több sakk} Bxh1
+23.Rxh1 Qd2 {és világos nem várta meg a mattot, hanem feladta.} 0-1
+
+[Variant "Glinski"]
+[Date "1989-04-02"]
+[Round "4"]
+[White "Rudolf László"]
+[Black "Sziráki László"]
+1.Ndf4 h6 {nem engedi meg a g6-ot}
+2.e6 k6
+3.exf7 gxf7
+4.Nhi3 i6
+5.Re3 Bd6
+6.Bg2 {szándékosan megbontom egyensúlyt vállalva kisminőség hátrányt: futóm marad huszárral szemben} Bxi3
+7.Nxi3 Bxg2
+8.Nxg2 Rg8
+9.Ne4 Qi7
+10.Qc3 {kötéspróba} Kh8 {talán nem a legszerencsésebb irányba vándorol a király, s a szürke futóm miatt jobb lett volna szint váltania}
+11.Nh4 {apró fenyegetés, amit nem vesz észre} Rg6?
+12.Bxb7! Ki8 {Rxb7-re Qe4 bástyanyerés következik}
+13.f6 Rg8
+14.Bf3 Ndf8
+15.Ree4 Ne9
+16.Rc4 Bi5
+17.Ne5 Nxe5
+18.Qxe5 Bh7
+19.Bg3 {nem ám Rxc7?? Rxc7 20.Qxc7 Rxg4! és vezért vesztek} Ng7
+20.Qf4 h5
+21.Qe4 {nem akarok még vezért cserélni} Qh6
+22.Kf2 Ni4 {sötét döntetlent ajánlott, de elutasítottam, sőt visszaadtam a gyalogot bízva a kialakuló kötés erősségében}
+23.h4 Nxf6
+24.Rc3 e6
+25.d5 Ql3
+26.Bf5 d6
+27.Rxf6! exf6
+28.Bxc8 Qxc8
+29.Qxf6 {megszabadultam végre az ellenfelem huszárjától és ismét gyalogelőnyöm lett} Qb6
+30.Kg2 Rg6
+31.Qe7 Bf8
+32.Rc4 {sokat gondolkodtam ezen a lépésen, most is úgy: ez volt a legjobb} f6
+33.Qe8 Kh7
+34.Rc6! {a betörése eldönti a játszmát} Qd4
+35.Qh9 Ki5
+36.Ql3 Kh7
+37.Rf9 Kh8
+38.Rxf8 Rg8
+39.Qg7 {és sötét feladta.} 1-0
+
+[Variant "Glinski"]
+[Date "1989-04-02"]
+[Round "5"]
+[White "Csupor Péter"]
+[Black "Rudolf László"]
+1.g5 Ndf8
+2.e5 g6
+3.i3 Ng7
+4.Ng2 d6
+5.d5 Bd7 {a gyenge f5 gyalogra játszom rá}
+6.Bd4 e6
+7.dxe6 Bxe6
+8.Ng4 Bxd4
+9.Rxd4 Bg8
+10.Bd3 Re8
+11.Qf2 Bd8
+12.Ni1 f6! {az e vonal megnyitása és a fehér mezejű futók cseréje után vezérnyeréssel fenyeget Re2}
+13.gxf6 gxf6
+14.Re1 fxe5
+15.fxe5 Bxe5
+16.Bxe5 Nfxe5
+17.Rde4 Bc6
+18.R4e3 Rie7
+19.Be4 Nf8
+20.Qf3! {egyetlen lépés, amely mindent véd, pedig már gyors győzelemről álmodoztam} Bxe4
+21.Rxe4 {kaptam egy drawajánlatot, amit udvariasan elutasítottam: egy gyalogelőny is előny!} Rxe4
+22.Rxe4 Rxe4
+23.Nxe4 Ni6
+24.Qc3 Qf9
+25.Qxf9 Kxf9 {a vezércsere után, ami nekem kedvez, hosszú manőverezés következik a huszárokkal, de a játszmát a gyalogok döntik el}
+26.Ng4 Ng5
+27.Kf2 i6
+28.Ke2 k5
+29.k3 c5
+30.Kf4 Nd5
+31.Kd3 Ke7
+32.Ngf2 Nd7
+33.Kd4 b5
+34.Nd3 Na3
+35.Kc3 d5 {d4 villával fenyegettem}
+36.Nef2 Ne5
+37.Na2 Kd6
+38.Ne4 Kc7
+39.Kb2 Nac6
+40.Nd3 Nh5
+41.Ndf2 Kd7
+42.Kd3 b4
+43.b2 c4
+44.Ng2 d4 {a vezérszárnyon nyomulok előre, hogy azután a királyszárnyon hajtsam végre az áttörést}
+45.Nh4 Ke6
+46.Ke3 Nce5
+47.Ng2 b3
+48.Ng4 Kd5
+49.Nd1 Ne6
+50.Nf2 Neb4
+51.Ng4? {az időzavar számlájára írható ez a hiba: a nyerés most már csak technika és idő kérdése} Nxg4
+52.hxg4 Kf6
+53.c3 dxc3
+54.bxc3 Kxg4
+55.cxb3 cxb3
+56.i4 Ki3
+57.Kd4 Kxk3
+58.Kxb3 Ne5
+59.Kd4 Ng3
+60.Kf5 Nxi4
+61.Kg5 k4
+62.Ng2 i5
+63.Ne4 h5
+64.Kh3 Kl2
+65.Nh4 Kl1 {ha nem lennének gyalogjaim, akár mattot is kaphatnék a sarokban!}
+66.Ki3 k3
+67.Kh3 Nf6
+68.Kg4 i4
+69.Nl3 h4 {a huszárt is odaadhatom, annyi a gyalog}
+70.Kh2 {nem kell!} k2
+71.Ki1 i3
+72.Nk1 i2 {és világos feladta, mert az ideje is elfogyott, nekem viszont még vezérem is lett volna.} 0-1
+
+[Variant "Glinski"]
+[Date "1989-04-02"]
+[Round "6"]
+[White "Deme Lajos"]
+[Black "Rudolf László"]
+1.Ndf4 Ndf8
+2.g6 Nhi6
+3.Nhi3 k6
+4.d4 Bd6
+5.e5 Be9
+6.Bd3 Nc6
+7.h5 Bf8
+8.Nc3 Qe9 {eddig sündisznóállásban helyezkedtem el és vártam, hogy az ellenfél kezdeményezzen}
+9.Bxc6 dxc6 {megbomlott az egyensúly, most már van mire játszani}
+10.Rg3 Bk7
+11.Ncf4 Ke10
+12.f6 Rd9 {idővel a d4 gyalogot szeretném leoperálni}
+13.Nl4 Bl5
+14.Kf1 fxg6
+15.hxg6 Bk5! {az operációt előkészítő tempó sakk, ráadásul a királynak alig van helye}
+16.Ke2 Bxd4
+17.Nfi3 Bxf2
+18.Kxf2 Bxi3
+19.Nxi3 Bd6
+20.Re3 e6
+21.Qc3 b6
+22.Rge4 Re7 {jobb lett volna azonnal Rf8}
+23.Nf5 Rf8
+24.Bf4 h6
+25.gxh6 Bxh6
+26.Bxh6 gxh6
+27.Ri4 Rd7
+28.Ref4 h5
+29.Qi3 Qf9
+30.Ri5 Qxb1
+31.Rxh5 Qxc2? {vissza kellett volna menni f9-re}
+32.Kh1 Ra3?? {mattokról ábrándoztam, de azonnal láttam, hogy Ki1! után egy jóképű sakkot sem tudok adni, nemhogy mattot, az engem fenyegető felfedett sakk viszont végzetes lehet}
+33.Kh2? {a rossz példa ragadós: világos még egy esélyt ad} Qb1
+34.Ki1 Qf9
+35.Rh8?? Rxh8 {most látszik a Ra3 lépés igazi "értéke": olyan távol került a h8 mezőtől, hogy szegény Lajos nem is vette észre!} {világos magához térve első kábultságából, azonnal feladta.} 0-1
+
+[Variant "Glinski"]
+[Date "1989-04-02"]
+[Round "7"]
+[White "Rudolf László"]
+[Black "Hámori András"]
+1.Ndf4 Bd6
+2.e6 Bxf4
+3.Nhxf4 fxe6
+4.Nxe6 Bg9
+5.Nxf9 Qxf9 {bandi ellen évek óta ez a koreográfia: adom a két huszárt futókért}
+6.c4! {fontos gyaloglépés} Rcf8? {elvisz egy tisztet a b7 gyalog védelmétől}
+7.Bg2 {a lépés értelme: meglógatni a c7 gyalogot egy esetleges b6-nál} Ni6
+8.Qb4 {rátapint a vezérszárny gyengeségére} c6
+9.Qa5 b6 {Pyalogot "néz" el, de 10.Bxb6? Rd8 után sötét tisztet nyerne}
+10.Qb4 b5
+11.c5!? {minden előkészítés nélkül szét akartam szakítani a vezérszárnyi gyalogokat} bxc5 {e5 lett volna az érdekesebb vari, erre d5-öt terveztem és sötétnek főhetett volna a feje a futók játékba kapcsolódása miatt}
+12.Rxc5 Kf11
+13.Ra5 Rg10 {sötét döntetlent ajánlott, de nem fogadhattam el, annyira csábított a támadás lehetősége}
+14.Ra6 g5? {elnézi a következő lépésemet}
+15.Qa3 Bc8
+16.Bd4 Rfd8
+17.Rf4 Rgg7
+18.fxg5 Rf7
+19.Rxf7 Nxf7
+20.Bf5 Ke9 {megelégelte a kellemetlen kötést}
+21.Be5 Rb6
+22.Rxb6 Nxb6
+23.Qc7 {ettől a vezérbetöréstől reméltem sokat, ezért is mentem bele a bástyacserébe} Qd8
+24.Qg8 Qf9
+25.Bg6 Ke10
+26.Qc7 Qe8! {kikényszeríti a vezércserét, bár bandi a mérkőzés után elmondta, hogy nem látta a Qb2 fenyegetést}
+27.Qxe8 Nxe8
+28.Bf5 Kd8 {ismét kaptam egy drawajánlatot, ismét elutasítottam, bár láttam, hogy az egyik futómtól meg kell válnom}
+29.g6 Nfh8
+30.g5 d5
+31.Bxc8 Kxc8 {a parti további alakulását nézve talán jobb lett volna a fehérmezejű futót ütni vállalva a nem túl szép vezérszárnyi gyalogállást cserébe a megbonthatatlan királyszárnyért}
+32.Bh9! {két futó nem ijedt meg a huszárkettőstől és célba veszi az i és k gyalogokat} Ne9
+33.Bg8 Nf11
+34.Bk2 Kd7 {sötét helyében én i6-tal megvédtem volna a kulcsfontosságú k7 gyalogot, s inkább a d5 gyalogról mondtam volna le}
+35.Bxk7 Ke6
+36.h5 Kf5
+37.Kf3 {nem szabad megengedni a teljes leszorítást} Kxg5? {most is i6 lett volna a jobb!}
+38.Bh6 Kf5? {miért nem Ke5!, ami komoly gondok elé állított volna}
+39.Bxi7 Ng7
+40.k2 e5
+41.Bl5 Nh4
+42.Kh2 c5
+43.k3 d4
+44.k4 Nh8
+45.i4 e4
+46.dxe4 dxe4
+47.i5 Kf6
+48.Ki3 Ng2
+49.Kh3 Nf5
+50.Bk7 e3?? {időzavaros hiba}
+51.Bxh8 Kxh5
+52.Kf4 e2?? {előbb elnézett, most "áldoz" egy huszárt}
+53.Kxf5 e1R {sötét most vette észre, hogy csak egy lépés erejéig lehetne vezére, ezért vett fel bástyát}
+54.Bk7 Kxk4
+55.Bxe1 Kxi5
+56.Ke6 Kh4
+57.Kxc5 Kxg6
+58.b3 {és feladta.} 1-0 {Az utolsó lépéseket még időzavar hatása alatt automatikusan tette meg sötét.}
+
+[Variant "Glinski"]
+[Date "1989-04-02"]
+[Round "8"]
+[White "Rudolf László"]
+[Black "Gados László"]
+1.Ndf4 e5
+2.fxe5 Qxe5
+3.Bg2 Qe10
+4.g6 fxg6
+5.Nxg6 i6
+6.Nxf9 {szeretem leütni a szürke futókat} Qxf9
+7.Ni3 Be9
+8.b2 Ke10
+9.k2 {mindkét oldalon helyet készítek a szürke futómnak} Ne7
+10.Bb1 Bf8? {nem látja a következő lépésemet, ezért nem lép ki a kötésből}
+11.Nf5! Qe9
+12.Nxe7 dxe7
+13.Qb4 c6 {Kf9 ideig-óráig védené az e7 gyalogot, de a kötés nagyon veszélyes}
+14.Bxe7 b6
+15.Bd5 Bxi2
+16.Qxb6 Bf8
+17.Bxc6 Kd9 {megindul a király végzetes útjára}
+18.Qb5 Ke8
+19.Bxg7 {hullanak a gyalogok, mint az őszi legyek} Kg8
+20.Bk1 Kh8
+21.e6 {vonalnyitás érdekében áldozom a gyalogot, de sötét nem meri leütni} Re8
+22.Qb7 Kg10
+23.Bb1 Kg9
+24.Rg4 Ng7
+25.d5 Rf11
+26.Qk3 {nagyon erős kötést hoz létre} Qf9
+27.Rxg7! Qxg7
+28.Rg3 Qxg3
+29.Bxg3 k5
+30.Bf3 Ke9
+31.e7! Bb6 {már nem lehetett jót lépni: fenyegetett Bd7 minőségnyerés, ezért védte sötét foggal-körömmel a b6-k6 átlót}
+32.Qb3 {és sötét beszüntette a reménytelen ellenállást.} 1-0
+
+[Variant "Glinski"]
+[Date "1989-04-02"]
+[Round "9"]
+[White "Lódi László"]
+[Black "Rudolf László"]
+1.Ndf4 Ndf8
+2.g6 Nhi6
+3.Nhi3 k6
+4.Bd4 Be9
+5.Bxf8 Bxf8
+6.gxf7 exf7
+7.Be2 Bd6? {elég passzívan játszottam eddig, s a lehető legrosszabbkor kezdtem aktivizálni magam}
+8.Nh5! {igen veszélyesek lettek a világos huszárok: fenyegetett Nk5 majd Nxi7} f6
+9.Bf4 Nh4
+10.Rh1 Nxf3
+11.Qxf3 g5 {kínomban áldoztam ezt a gyalogot}
+12.fxg5 fxg5
+13.Rg2 Bxf4 {Bxh5 14.Rxg5 után választhatok, melyik futómat adom oda}
+14.Nxf8 Rixf8
+15.Rxf4 Bxi3 {sikerült lecserélni a huszárokat, s megúszni nagyobb baj nélkül a könnyelmű megnyitást}
+16.hxi3 Rxf4 {itt még azt gondoltam, hogy én nyerek gyalogot, de világos természetesen nem hagyta ki a tempólépést}
+17.Rxg5 Rg7
+18.Qxf4 Qe8
+19.Rxg7? {Szabadgyalog létrehozása miatt provokáltam ki a bástyacserét, amit világos Rg2!-vel elkerülhetett volna} hxg7
+20.Qh3 {világos döntetlent ajánlott, de én vérszemet kapva a létrejött gyalogállástól, elutasítottam} Kf9
+21.Qxe8?? {belekalkuláltam persze ezt a lépést is, ami után világos számára gyalogelőnye ellenére is veszve van a végjáték} Kxe8
+22.Kf3 Kf7
+23.Kg4 Kg6 {az opponálásból már én kerültem ki győztesen, a királyszárnyon két gyaloggal is tartom a szembenálló hármat, s előbb-utóbb dönt a "távoli" szabadgyalog, ha a vezérszárnyra terelődik a harc}
+24.k3 i5
+25.i4 k5
+26.i3 d5! {a vezérszárnyon is leszorításra törekszem}
+27.Kf4 Kf6
+28.d4 c5
+29.b3 b5
+30.c4 b4
+31.cxb4 cxb4
+32.e5 Ke6 {nem kell elsietni a cserét}
+33.Ke4 dxe5
+34.d5 {dxe g5 35.Kf4 g4! 36.Kxg4 Kxe5 után lenyerem a b gyalogot s ott megyek be vezérnek} Kd6
+35.Kf6 g6
+36.Kxg6 Kxd5
+37.Kh6 e4
+38.Kxk5 e3
+39.Kxi5 e2
+40.Kk5 e1Q
+41.i5 Qk2 {és világos nem várta meg, hogy az i gyalogok leütése után a b gyalogom is vezérré változzon.} 0-1
