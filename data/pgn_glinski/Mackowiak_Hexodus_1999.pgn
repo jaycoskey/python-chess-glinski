@@ -1,5 +1,8 @@
+[Variant "Glinski"]
 [White "Marek Mackowiak"]
 [Black "Hexodus III"]
+[WhiteType "Human"]
+[BlackType "Computer"]
 [Result "1-0"]
 [Source "https://www.chessvariants.com/hexagonal.dir/glinski/europe99.html"]
 
